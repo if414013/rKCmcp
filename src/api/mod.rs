@@ -1,1 +1,7 @@
-//! API module for handling HTTP server and endpoints
+//! Keycloak Admin REST API client module.
+
+pub mod client;
+pub mod error;
+
+pub use client::KeycloakClient;
+pub use error::ApiError;
