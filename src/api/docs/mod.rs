@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
 use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 
 use crate::api::error::ApiError;
-use crate::vector::{MilvusClient, EmbeddingService, IndexStats};
+use crate::vector::{EmbeddingService, IndexStats, MilvusClient};
 
 pub struct DocsSearchService {
     milvus: MilvusClient,
@@ -19,7 +19,9 @@ pub struct DocsSearchParams {
     pub doc_type: Option<String>,
 }
 
-fn default_limit() -> u32 { 10 }
+fn default_limit() -> u32 {
+    10
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct DocsListSectionsParams {
@@ -52,7 +54,11 @@ pub struct DocSearchHit {
 
 impl DocsSearchService {
     pub fn new(milvus: MilvusClient, embeddings: EmbeddingService, collection: String) -> Self {
-        Self { milvus, embeddings, collection }
+        Self {
+            milvus,
+            embeddings,
+            collection,
+        }
     }
 
     pub async fn ensure_collection(&self) -> Result<(), ApiError> {
@@ -64,41 +70,56 @@ impl DocsSearchService {
 
     pub async fn search(&self, params: &DocsSearchParams) -> Result<DocsSearchResponse, ApiError> {
         let query_vector = self.embeddings.embed_single(&params.query).await?;
-        
-        let filter = params.doc_type.as_ref().map(|dt| {
-            format!("doc_type == \"{}\"", dt)
-        });
+
+        let filter = params
+            .doc_type
+            .as_ref()
+            .map(|dt| format!("doc_type == \"{}\"", dt));
 
         let output_fields = vec!["text", "source_url", "doc_type", "section_path", "heading"];
-        
-        let results = self.milvus.search(
-            &self.collection,
-            query_vector,
-            params.limit,
-            filter,
-            output_fields,
-        ).await?;
 
-        let hits: Vec<DocSearchHit> = results.into_iter()
+        let results = self
+            .milvus
+            .search(
+                &self.collection,
+                query_vector,
+                params.limit,
+                filter,
+                output_fields,
+            )
+            .await?;
+
+        let hits: Vec<DocSearchHit> = results
+            .into_iter()
             .map(|r| DocSearchHit {
                 id: r.id,
                 score: r.score,
                 text: r.text,
-                source_url: r.metadata.get("source_url")
+                source_url: r
+                    .metadata
+                    .get("source_url")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string(),
-                doc_type: r.metadata.get("doc_type")
+                doc_type: r
+                    .metadata
+                    .get("doc_type")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string(),
-                section_path: r.metadata.get("section_path")
+                section_path: r
+                    .metadata
+                    .get("section_path")
                     .and_then(|v| v.as_array())
-                    .map(|arr| arr.iter()
-                        .filter_map(|v| v.as_str().map(String::from))
-                        .collect())
+                    .map(|arr| {
+                        arr.iter()
+                            .filter_map(|v| v.as_str().map(String::from))
+                            .collect()
+                    })
                     .unwrap_or_default(),
-                heading: r.metadata.get("heading")
+                heading: r
+                    .metadata
+                    .get("heading")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string(),
@@ -106,7 +127,7 @@ impl DocsSearchService {
             .collect();
 
         let total = hits.len();
-        
+
         Ok(DocsSearchResponse {
             results: hits,
             total,

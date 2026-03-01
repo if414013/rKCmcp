@@ -18,10 +18,10 @@ pub use client::KeycloakClient;
 pub use error::ApiError;
 
 pub use code::{
-    code_search, code_get_stats, CodeSearchService,
-    CodeSearchParams, CodeGetStatsParams, CodeSearchResponse,
+    code_get_stats, code_search, CodeGetStatsParams, CodeSearchParams, CodeSearchResponse,
+    CodeSearchService,
 };
 pub use docs::{
-    docs_search, docs_get_stats, DocsSearchService,
-    DocsSearchParams, DocsGetStatsParams, DocsSearchResponse,
+    docs_get_stats, docs_search, DocsGetStatsParams, DocsSearchParams, DocsSearchResponse,
+    DocsSearchService,
 };

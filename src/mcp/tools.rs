@@ -78,8 +78,8 @@ use crate::api::{
         ClientScopeMappingsRealmRemoveParams, ClientSecretGetParams, ClientSecretRegenerateParams,
         ClientServiceAccountUserGetParams, ClientUpdateParams,
     },
-    code::{CodeSearchParams, CodeGetStatsParams, CodeSearchService},
-    docs::{DocsSearchParams, DocsGetStatsParams, DocsSearchService},
+    code::{CodeGetStatsParams, CodeSearchParams, CodeSearchService},
+    docs::{DocsGetStatsParams, DocsSearchParams, DocsSearchService},
     groups::{
         group_child_create, group_children_list, group_count, group_create, group_delete,
         group_get, group_list, group_members_list, group_set_parent, group_update,
@@ -1634,24 +1634,35 @@ impl KeycloakToolHandler {
     // VECTOR SEARCH API - Documentation & Code Search
     // ============================================================================
 
-    #[tool(description = "Search Keycloak documentation using semantic search. Returns relevant documentation sections based on natural language queries.")]
+    #[tool(
+        description = "Search Keycloak documentation using semantic search. Returns relevant documentation sections based on natural language queries."
+    )]
     async fn docs_search(
         &self,
         params: Parameters<DocsSearchParams>,
     ) -> Result<CallToolResult, McpError> {
         use crate::config::Config;
-        use crate::vector::{MilvusClient, EmbeddingService};
-        
-        let config = Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let milvus = MilvusClient::new(&config.milvus_host, config.milvus_port, config.embedding_dimension)
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let embeddings = EmbeddingService::new(&config.embedding_model, config.embedding_dimension, config.openai_api_key.clone())
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
+        use crate::vector::{EmbeddingService, MilvusClient};
+
+        let config =
+            Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let milvus = MilvusClient::new(
+            &config.milvus_host,
+            config.milvus_port,
+            config.embedding_dimension,
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let embeddings = EmbeddingService::new(
+            &config.embedding_model,
+            config.embedding_dimension,
+            config.openai_api_key.clone(),
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
         let service = DocsSearchService::new(milvus, embeddings, config.milvus_collection_docs);
-        
+
         match crate::api::docs::docs_search(&service, &params.0).await {
             Ok(result) => {
                 let json = serde_json::to_string_pretty(&result)
@@ -1662,24 +1673,35 @@ impl KeycloakToolHandler {
         }
     }
 
-    #[tool(description = "Get statistics about the indexed Keycloak documentation including total vectors and last index time.")]
+    #[tool(
+        description = "Get statistics about the indexed Keycloak documentation including total vectors and last index time."
+    )]
     async fn docs_get_stats(
         &self,
         params: Parameters<DocsGetStatsParams>,
     ) -> Result<CallToolResult, McpError> {
         use crate::config::Config;
-        use crate::vector::{MilvusClient, EmbeddingService};
-        
-        let config = Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let milvus = MilvusClient::new(&config.milvus_host, config.milvus_port, config.embedding_dimension)
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let embeddings = EmbeddingService::new(&config.embedding_model, config.embedding_dimension, config.openai_api_key.clone())
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
+        use crate::vector::{EmbeddingService, MilvusClient};
+
+        let config =
+            Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let milvus = MilvusClient::new(
+            &config.milvus_host,
+            config.milvus_port,
+            config.embedding_dimension,
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let embeddings = EmbeddingService::new(
+            &config.embedding_model,
+            config.embedding_dimension,
+            config.openai_api_key.clone(),
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
         let service = DocsSearchService::new(milvus, embeddings, config.milvus_collection_docs);
-        
+
         match crate::api::docs::docs_get_stats(&service, &params.0).await {
             Ok(result) => {
                 let json = serde_json::to_string_pretty(&result)
@@ -1690,24 +1712,35 @@ impl KeycloakToolHandler {
         }
     }
 
-    #[tool(description = "Search Keycloak source code using semantic search. Find implementations, classes, methods based on natural language queries. Supports filtering by language, file path, and chunk type (function, class, method).")]
+    #[tool(
+        description = "Search Keycloak source code using semantic search. Find implementations, classes, methods based on natural language queries. Supports filtering by language, file path, and chunk type (function, class, method)."
+    )]
     async fn code_search(
         &self,
         params: Parameters<CodeSearchParams>,
     ) -> Result<CallToolResult, McpError> {
         use crate::config::Config;
-        use crate::vector::{MilvusClient, EmbeddingService};
-        
-        let config = Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let milvus = MilvusClient::new(&config.milvus_host, config.milvus_port, config.embedding_dimension)
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let embeddings = EmbeddingService::new(&config.embedding_model, config.embedding_dimension, config.openai_api_key.clone())
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
+        use crate::vector::{EmbeddingService, MilvusClient};
+
+        let config =
+            Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let milvus = MilvusClient::new(
+            &config.milvus_host,
+            config.milvus_port,
+            config.embedding_dimension,
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let embeddings = EmbeddingService::new(
+            &config.embedding_model,
+            config.embedding_dimension,
+            config.openai_api_key.clone(),
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
         let service = CodeSearchService::new(milvus, embeddings, config.milvus_collection_code);
-        
+
         match crate::api::code::code_search(&service, &params.0).await {
             Ok(result) => {
                 let json = serde_json::to_string_pretty(&result)
@@ -1718,24 +1751,35 @@ impl KeycloakToolHandler {
         }
     }
 
-    #[tool(description = "Get statistics about the indexed Keycloak source code including total vectors and last index time.")]
+    #[tool(
+        description = "Get statistics about the indexed Keycloak source code including total vectors and last index time."
+    )]
     async fn code_get_stats(
         &self,
         params: Parameters<CodeGetStatsParams>,
     ) -> Result<CallToolResult, McpError> {
         use crate::config::Config;
-        use crate::vector::{MilvusClient, EmbeddingService};
-        
-        let config = Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let milvus = MilvusClient::new(&config.milvus_host, config.milvus_port, config.embedding_dimension)
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
-        let embeddings = EmbeddingService::new(&config.embedding_model, config.embedding_dimension, config.openai_api_key.clone())
-            .map_err(|e| McpError::internal_error(e.to_string(), None))?;
-        
+        use crate::vector::{EmbeddingService, MilvusClient};
+
+        let config =
+            Config::from_env().map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let milvus = MilvusClient::new(
+            &config.milvus_host,
+            config.milvus_port,
+            config.embedding_dimension,
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
+        let embeddings = EmbeddingService::new(
+            &config.embedding_model,
+            config.embedding_dimension,
+            config.openai_api_key.clone(),
+        )
+        .map_err(|e| McpError::internal_error(e.to_string(), None))?;
+
         let service = CodeSearchService::new(milvus, embeddings, config.milvus_collection_code);
-        
+
         match crate::api::code::code_get_stats(&service, &params.0).await {
             Ok(result) => {
                 let json = serde_json::to_string_pretty(&result)
