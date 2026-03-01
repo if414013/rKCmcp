@@ -30,13 +30,6 @@ pub struct Config {
     pub mcp_port: u16,
     pub log_level: String,
     pub jwks_cache_ttl: u64,
-    pub milvus_host: String,
-    pub milvus_port: u16,
-    pub milvus_collection_docs: String,
-    pub milvus_collection_code: String,
-    pub embedding_model: String,
-    pub embedding_dimension: u32,
-    pub openai_api_key: Option<String>,
 }
 
 impl Config {
@@ -70,46 +63,12 @@ impl Config {
             Err(_) => 3600,
         };
 
-        let milvus_host = env::var("MILVUS_HOST").unwrap_or_else(|_| "localhost".to_string());
-
-        let milvus_port = match env::var("MILVUS_PORT") {
-            Ok(port_str) => port_str.parse().map_err(|_| {
-                ConfigError::InvalidValue("MILVUS_PORT must be a valid port number".to_string())
-            })?,
-            Err(_) => 19530,
-        };
-
-        let milvus_collection_docs =
-            env::var("MILVUS_COLLECTION_DOCS").unwrap_or_else(|_| "keycloak_docs".to_string());
-
-        let milvus_collection_code =
-            env::var("MILVUS_COLLECTION_CODE").unwrap_or_else(|_| "keycloak_code".to_string());
-
-        let embedding_model =
-            env::var("EMBEDDING_MODEL").unwrap_or_else(|_| "all-MiniLM-L6-v2".to_string());
-
-        let embedding_dimension = match env::var("EMBEDDING_DIMENSION") {
-            Ok(dim_str) => dim_str.parse().map_err(|_| {
-                ConfigError::InvalidValue("EMBEDDING_DIMENSION must be a valid number".to_string())
-            })?,
-            Err(_) => 384,
-        };
-
-        let openai_api_key = env::var("OPENAI_API_KEY").ok();
-
         let config = Self {
             keycloak_url,
             keycloak_realm,
             mcp_port,
             log_level,
             jwks_cache_ttl,
-            milvus_host,
-            milvus_port,
-            milvus_collection_docs,
-            milvus_collection_code,
-            embedding_model,
-            embedding_dimension,
-            openai_api_key,
         };
 
         Ok(config)
@@ -128,13 +87,6 @@ impl Default for Config {
             mcp_port: 3000,
             log_level: "info".to_string(),
             jwks_cache_ttl: 3600,
-            milvus_host: "localhost".to_string(),
-            milvus_port: 19530,
-            milvus_collection_docs: "keycloak_docs".to_string(),
-            milvus_collection_code: "keycloak_code".to_string(),
-            embedding_model: "all-MiniLM-L6-v2".to_string(),
-            embedding_dimension: 384,
-            openai_api_key: None,
         }
     }
 }
@@ -152,9 +104,6 @@ mod tests {
         assert_eq!(config.mcp_port, 3000);
         assert_eq!(config.log_level, "info");
         assert_eq!(config.jwks_cache_ttl, 3600);
-        assert_eq!(config.milvus_host, "localhost");
-        assert_eq!(config.milvus_port, 19530);
-        assert_eq!(config.embedding_dimension, 384);
     }
 
     #[test]

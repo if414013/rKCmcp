@@ -90,6 +90,10 @@ This will start:
 | `LOG_LEVEL` | Logging verbosity (trace/debug/info/warn/error) | `info` |
 | `JWKS_CACHE_TTL` | JWKS cache time-to-live in seconds | `3600` |
 
+## Keycloak Documentation Lookup
+
+For Keycloak documentation queries, AI assistants can use `WebSearch` and `WebFetch` tool calls to look up the official Keycloak docs at [keycloak.org](https://www.keycloak.org/documentation) directly. No local vector database needed — just search and fetch on demand.
+
 ## API Coverage Summary
 
 The server provides comprehensive coverage for Keycloak Admin REST API:
