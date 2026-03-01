@@ -1,0 +1,264 @@
+{
+  "realm": "mcp-test",
+  "enabled": true,
+  "displayName": "MCP Test Realm",
+  "loginTheme": "keycloak",
+  "accountTheme": "keycloak",
+  "adminTheme": "keycloak",
+  "emailTheme": "keycloak",
+  "accessTokenLifespan": 300,
+  "accessCodeLifespan": 60,
+  "accessCodeLifespanUserAction": 300,
+  "refreshTokenMaxReuse": 0,
+  "offlineSessionIdleTimeout": 2592000,
+  "offlineSessionMaxLifespan": 5184000,
+  "clientSessionIdleTimeout": 0,
+  "clientSessionMaxLifespan": 0,
+  "defaultRole": {
+    "name": "default-roles-mcp-test",
+    "composite": true,
+    "composites": {
+      "realm": [],
+      "client": {}
+    },
+    "clientRole": false,
+    "containerId": "mcp-test"
+  },
+  "roles": {
+    "realm": [
+      {
+        "name": "default-roles-mcp-test",
+        "composite": true,
+        "composites": {
+          "realm": [],
+          "client": {}
+        },
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "offline_access",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "uma_authorization",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      }
+    ],
+    "client": {
+      "mcp-server": [
+        {
+          "name": "mcp-admin",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "mcp-server"
+        },
+        {
+          "name": "mcp-user",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "mcp-server"
+        }
+      ]
+    }
+  },
+  "scopeMappings": [
+    {
+      "client": "mcp-server",
+      "roles": [
+        "offline_access",
+        "uma_authorization"
+      ]
+    }
+  ],
+  "clientScopeMappings": {
+    "mcp-server": [
+      {
+        "client": "mcp-server",
+        "roles": [
+          "mcp-admin",
+          "mcp-user"
+        ]
+      }
+    ]
+  },
+  "clientScopes": [
+    {
+      "name": "mcp:tools",
+      "description": "Scope for MCP tools capability",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "mcp-tools-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "config": {
+            "claim.value": "true",
+            "claim.name": "mcp:tools",
+            "jsonType.label": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mcp:resources",
+      "description": "Scope for MCP resources capability",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "mcp-resources-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "config": {
+            "claim.value": "true",
+            "claim.name": "mcp:resources",
+            "jsonType.label": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mcp:prompts",
+      "description": "Scope for MCP prompts capability",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "mcp-prompts-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "config": {
+            "claim.value": "true",
+            "claim.name": "mcp:prompts",
+            "jsonType.label": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "offline_access",
+      "description": "OpenID Connect built-in scope: offline_access",
+      "protocol": "openid-connect",
+      "attributes": {
+        "consent.screen.text": "${offlineAccessScopeConsentText}",
+        "display.on.consent.screen": "true"
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "mcp-server",
+      "name": "MCP Server Client",
+      "description": "Confidential client for MCP server OAuth 2.1 resource access",
+      "enabled": true,
+      "clientAuthenticationType": "client_secret_basic",
+      "publicClient": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000"
+      ],
+      "optionalClientScopes": [
+        "mcp:tools",
+        "mcp:resources",
+        "mcp:prompts",
+        "offline_access"
+      ],
+      "defaultClientScopes": [
+        "mcp:tools",
+        "mcp:resources",
+        "mcp:prompts",
+        "openid",
+        "profile",
+        "email"
+      ],
+      "protocolMappers": [
+        {
+          "name": "audience-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "mcp-server"
+          }
+        },
+        {
+          "name": "Allowed Web Origins",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-allowed-origins-mapper",
+          "consentRequired": false,
+          "config": {}
+        },
+        {
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "admin-cli",
+      "name": "Admin CLI",
+      "enabled": true,
+      "clientAuthenticationType": "client_secret_basic",
+      "publicClient": false,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false
+    }
+  ]
+}
