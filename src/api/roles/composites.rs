@@ -293,7 +293,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesListParams {
             realm: "master".to_string(),
             role_name: "parent-role".to_string(),
@@ -318,7 +319,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesListParams {
             realm: "master".to_string(),
             role_name: "simple-role".to_string(),
@@ -342,7 +344,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesListParams {
             realm: "master".to_string(),
             role_name: "my role".to_string(),
@@ -356,13 +359,11 @@ mod tests {
     async fn test_realm_role_composites_add_success() {
         let mock_server = MockServer::start().await;
 
-        let roles_to_add = vec![
-            RoleRepresentation {
-                id: Some("1".to_string()),
-                name: Some("child-role".to_string()),
-                ..Default::default()
-            },
-        ];
+        let roles_to_add = vec![RoleRepresentation {
+            id: Some("1".to_string()),
+            name: Some("child-role".to_string()),
+            ..Default::default()
+        }];
 
         Mock::given(method("POST"))
             .and(path("/admin/realms/master/roles/parent-role/composites"))
@@ -372,7 +373,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesAddParams {
             realm: "master".to_string(),
             role_name: "parent-role".to_string(),
@@ -387,13 +389,11 @@ mod tests {
     async fn test_realm_role_composites_add_not_found() {
         let mock_server = MockServer::start().await;
 
-        let roles_to_add = vec![
-            RoleRepresentation {
-                id: Some("999".to_string()),
-                name: Some("nonexistent".to_string()),
-                ..Default::default()
-            },
-        ];
+        let roles_to_add = vec![RoleRepresentation {
+            id: Some("999".to_string()),
+            name: Some("nonexistent".to_string()),
+            ..Default::default()
+        }];
 
         Mock::given(method("POST"))
             .and(path("/admin/realms/master/roles/parent-role/composites"))
@@ -401,7 +401,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesAddParams {
             realm: "master".to_string(),
             role_name: "parent-role".to_string(),
@@ -416,13 +417,11 @@ mod tests {
     async fn test_realm_role_composites_remove_success() {
         let mock_server = MockServer::start().await;
 
-        let roles_to_remove = vec![
-            RoleRepresentation {
-                id: Some("1".to_string()),
-                name: Some("child-role".to_string()),
-                ..Default::default()
-            },
-        ];
+        let roles_to_remove = vec![RoleRepresentation {
+            id: Some("1".to_string()),
+            name: Some("child-role".to_string()),
+            ..Default::default()
+        }];
 
         Mock::given(method("DELETE"))
             .and(path("/admin/realms/master/roles/parent-role/composites"))
@@ -432,7 +431,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesRemoveParams {
             realm: "master".to_string(),
             role_name: "parent-role".to_string(),
@@ -447,13 +447,11 @@ mod tests {
     async fn test_realm_role_composites_remove_not_found() {
         let mock_server = MockServer::start().await;
 
-        let roles_to_remove = vec![
-            RoleRepresentation {
-                id: Some("999".to_string()),
-                name: Some("nonexistent".to_string()),
-                ..Default::default()
-            },
-        ];
+        let roles_to_remove = vec![RoleRepresentation {
+            id: Some("999".to_string()),
+            name: Some("nonexistent".to_string()),
+            ..Default::default()
+        }];
 
         Mock::given(method("DELETE"))
             .and(path("/admin/realms/master/roles/parent-role/composites"))
@@ -461,7 +459,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCompositesRemoveParams {
             realm: "master".to_string(),
             role_name: "parent-role".to_string(),
@@ -504,7 +503,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleUsersListParams {
             realm: "master".to_string(),
             role_name: "admin".to_string(),
@@ -533,7 +533,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleUsersListParams {
             realm: "master".to_string(),
             role_name: "admin".to_string(),
@@ -555,7 +556,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleUsersListParams {
             realm: "master".to_string(),
             role_name: "nonexistent".to_string(),
@@ -595,7 +597,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleGroupsListParams {
             realm: "master".to_string(),
             role_name: "admin".to_string(),
@@ -626,7 +629,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleGroupsListParams {
             realm: "master".to_string(),
             role_name: "admin".to_string(),
@@ -649,7 +653,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleGroupsListParams {
             realm: "master".to_string(),
             role_name: "nonexistent".to_string(),

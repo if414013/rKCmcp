@@ -1,8 +1,10 @@
 //! Realm roles API module for Keycloak Admin REST API.
 
+mod by_id;
 mod composites;
 mod types;
 
+pub use by_id::*;
 pub use composites::*;
 pub use types::*;
 
@@ -78,7 +80,10 @@ pub async fn realm_role_update(
     );
 
     let role = RoleRepresentation {
-        name: params.new_name.clone().or_else(|| Some(params.role_name.clone())),
+        name: params
+            .new_name
+            .clone()
+            .or_else(|| Some(params.role_name.clone())),
         description: params.description.clone(),
         attributes: params.attributes.clone(),
         ..Default::default()
@@ -134,7 +139,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleListParams {
             realm: "master".to_string(),
             search: None,
@@ -167,7 +173,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleListParams {
             realm: "test-realm".to_string(),
             search: Some("admin".to_string()),
@@ -195,7 +202,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleListParams {
             realm: "master".to_string(),
             search: None,
@@ -229,7 +237,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleGetParams {
             realm: "master".to_string(),
             role_name: "admin".to_string(),
@@ -252,7 +261,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleGetParams {
             realm: "master".to_string(),
             role_name: "nonexistent".to_string(),
@@ -278,7 +288,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleGetParams {
             realm: "master".to_string(),
             role_name: "my role".to_string(),
@@ -300,7 +311,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCreateParams {
             realm: "master".to_string(),
             name: "new-role".to_string(),
@@ -324,7 +336,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleCreateParams {
             realm: "master".to_string(),
             name: "admin".to_string(),
@@ -352,7 +365,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleUpdateParams {
             realm: "master".to_string(),
             role_name: "old-name".to_string(),
@@ -375,7 +389,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleUpdateParams {
             realm: "master".to_string(),
             role_name: "nonexistent".to_string(),
@@ -399,7 +414,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleDeleteParams {
             realm: "master".to_string(),
             role_name: "test-role".to_string(),
@@ -419,7 +435,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleDeleteParams {
             realm: "master".to_string(),
             role_name: "nonexistent".to_string(),
@@ -439,7 +456,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleListParams {
             realm: "master".to_string(),
             search: None,
@@ -462,7 +480,8 @@ mod tests {
             .mount(&mock_server)
             .await;
 
-        let client = KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
+        let client =
+            KeycloakClient::new(mock_server.uri()).expect("client creation should succeed");
         let params = RoleListParams {
             realm: "master".to_string(),
             search: None,

@@ -62,7 +62,9 @@ impl UserGroupsListParams {
         }
         if let Some(first) = self.first {
             if first < 0 {
-                return Err(ApiError::BadRequest("first must be non-negative".to_string()));
+                return Err(ApiError::BadRequest(
+                    "first must be non-negative".to_string(),
+                ));
             }
         }
         if let Some(max) = self.max {

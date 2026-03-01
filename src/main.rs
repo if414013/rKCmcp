@@ -1,22 +1,11 @@
-//! Keycloak MCP Server
-//!
-//! A Model Context Protocol (MCP) server implementation for Keycloak integration.
-
-pub mod api;
-pub mod auth;
-pub mod config;
-pub mod error;
-pub mod mcp;
-
-use axum::{Json, Router, routing::get};
+use axum::{routing::get, Json, Router};
+use keycloak_mcp_server::config::Config;
+use keycloak_mcp_server::mcp::KeycloakMcpServer;
 use rmcp::transport::streamable_http_server::{
-    StreamableHttpService, session::local::LocalSessionManager,
+    session::local::LocalSessionManager, StreamableHttpService,
 };
-use serde_json::{Value, json};
+use serde_json::{json, Value};
 use std::sync::Arc;
-
-use crate::config::Config;
-use crate::mcp::KeycloakMcpServer;
 
 async fn health_check() -> Json<Value> {
     Json(json!({"status": "ok"}))
@@ -24,11 +13,25 @@ async fn health_check() -> Json<Value> {
 
 #[tokio::main]
 async fn main() {
-    let config = Config::from_env();
+    let config = match Config::from_env() {
+        Ok(cfg) => cfg,
+        Err(e) => {
+            eprintln!("❌ Configuration Error: {}", e);
+            eprintln!("\nPlease ensure all required environment variables are set:");
+            eprintln!("  - KEYCLOAK_URL: URL of your Keycloak server (required)");
+            eprintln!("\nOptional environment variables (with defaults):");
+            eprintln!("  - KEYCLOAK_REALM: Keycloak realm name (default: master)");
+            eprintln!("  - MCP_PORT: Server port (default: 3000)");
+            eprintln!("  - LOG_LEVEL: Logging level (default: info)");
+            eprintln!("  - JWKS_CACHE_TTL: JWKS cache TTL in seconds (default: 3600)");
+            std::process::exit(1);
+        }
+    };
+
     let bind_address = config.bind_address();
 
     let mcp_service = StreamableHttpService::new(
-        || Ok(KeycloakMcpServer::new()),
+        || Ok(KeycloakMcpServer::default()),
         Arc::new(LocalSessionManager::default()),
         Default::default(),
     );

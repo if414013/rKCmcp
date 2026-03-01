@@ -2,8 +2,18 @@
 //!
 //! Provides CRUD operations for managing OAuth 2.0 clients in Keycloak realms.
 
+pub mod credentials;
+pub mod protocol_mappers;
+pub mod roles;
+pub mod scope_mappings;
+pub mod service_account;
 pub mod types;
 
+pub use credentials::*;
+pub use protocol_mappers::*;
+pub use roles::*;
+pub use scope_mappings::*;
+pub use service_account::*;
 pub use types::*;
 
 use crate::api::{ApiError, KeycloakClient};
@@ -239,7 +249,10 @@ mod tests {
 
         let returned_client = result.expect("Failed to get client");
         assert_eq!(returned_client.id, Some("abc-123".to_string()));
-        assert_eq!(returned_client.client_id, Some("my-test-client".to_string()));
+        assert_eq!(
+            returned_client.client_id,
+            Some("my-test-client".to_string())
+        );
     }
 
     #[tokio::test]
@@ -421,7 +434,9 @@ mod tests {
         Mock::given(method("GET"))
             .and(path("/admin/realms/my-realm/clients"))
             .and(query_param("clientId", "client/with+special"))
-            .respond_with(ResponseTemplate::new(200).set_body_json(Vec::<ClientRepresentation>::new()))
+            .respond_with(
+                ResponseTemplate::new(200).set_body_json(Vec::<ClientRepresentation>::new()),
+            )
             .mount(&mock_server)
             .await;
 

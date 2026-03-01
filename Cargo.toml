@@ -2,6 +2,11 @@
 name = "keycloak-mcp-server"
 version = "0.1.0"
 edition = "2021"
+description = "MCP server for Keycloak Admin API"
+license = "MIT"
+repository = "https://github.com/your-org/keycloak-mcp-server"
+keywords = ["keycloak", "mcp", "oauth", "identity", "admin"]
+categories = ["authentication", "web-programming"]
 
 [dependencies]
 rmcp = { version = "0.8", features = [
@@ -17,9 +22,12 @@ serde_json = "1"
 jsonwebtoken = "10"
 thiserror = "1"
 schemars = { version = "1.0", features = ["derive"] }
+urlencoding = "2"
 
 [dev-dependencies]
 wiremock = "0.6"
+uuid = { version = "1", features = ["v4"] }
+serial_test = "3.0"
 
 [profile.dev]
 opt-level = 0

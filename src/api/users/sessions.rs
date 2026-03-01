@@ -279,7 +279,9 @@ pub async fn user_logout(
         params.realm, params.user_id
     );
 
-    client.post_no_response(&path, token, &serde_json::Value::Null).await
+    client
+        .post_no_response(&path, token, &serde_json::Value::Null)
+        .await
 }
 
 /// List user consents.
@@ -363,7 +365,9 @@ pub async fn user_federated_identity_add(
         params.realm, params.user_id, params.provider
     );
 
-    client.post_no_response(&path, token, &params.identity).await
+    client
+        .post_no_response(&path, token, &params.identity)
+        .await
 }
 
 /// Remove a federated identity from a user.
@@ -710,7 +714,8 @@ mod tests {
             Mock::given(method("GET"))
                 .and(path("/admin/realms/master/users/123/sessions"))
                 .respond_with(
-                    ResponseTemplate::new(200).set_body_json::<Vec<UserSessionRepresentation>>(vec![]),
+                    ResponseTemplate::new(200)
+                        .set_body_json::<Vec<UserSessionRepresentation>>(vec![]),
                 )
                 .mount(&mock_server)
                 .await;
@@ -826,15 +831,13 @@ mod tests {
         async fn test_consents_list_success() {
             let mock_server = MockServer::start().await;
 
-            let expected_consents = vec![
-                UserConsentRepresentation {
-                    client_id: Some("client-1".to_string()),
-                    created_date: Some(1609459200000),
-                    last_updated_date: Some(1609459800000),
-                    granted_client_scopes: Some(vec!["profile".to_string(), "email".to_string()]),
-                    granted_protocol_mappers: None,
-                },
-            ];
+            let expected_consents = vec![UserConsentRepresentation {
+                client_id: Some("client-1".to_string()),
+                created_date: Some(1609459200000),
+                last_updated_date: Some(1609459800000),
+                granted_client_scopes: Some(vec!["profile".to_string(), "email".to_string()]),
+                granted_protocol_mappers: None,
+            }];
 
             Mock::given(method("GET"))
                 .and(path("/admin/realms/master/users/123/consents"))
@@ -863,7 +866,8 @@ mod tests {
             Mock::given(method("GET"))
                 .and(path("/admin/realms/master/users/123/consents"))
                 .respond_with(
-                    ResponseTemplate::new(200).set_body_json::<Vec<UserConsentRepresentation>>(vec![]),
+                    ResponseTemplate::new(200)
+                        .set_body_json::<Vec<UserConsentRepresentation>>(vec![]),
                 )
                 .mount(&mock_server)
                 .await;
@@ -962,13 +966,11 @@ mod tests {
         async fn test_federated_identity_list_success() {
             let mock_server = MockServer::start().await;
 
-            let expected_identities = vec![
-                FederatedIdentityRepresentation {
-                    identity_provider: Some("google".to_string()),
-                    user_id: Some("google-123".to_string()),
-                    user_name: Some("googleuser".to_string()),
-                },
-            ];
+            let expected_identities = vec![FederatedIdentityRepresentation {
+                identity_provider: Some("google".to_string()),
+                user_id: Some("google-123".to_string()),
+                user_name: Some("googleuser".to_string()),
+            }];
 
             Mock::given(method("GET"))
                 .and(path("/admin/realms/master/users/123/federated-identity"))
@@ -997,7 +999,8 @@ mod tests {
             Mock::given(method("GET"))
                 .and(path("/admin/realms/master/users/123/federated-identity"))
                 .respond_with(
-                    ResponseTemplate::new(200).set_body_json::<Vec<FederatedIdentityRepresentation>>(vec![]),
+                    ResponseTemplate::new(200)
+                        .set_body_json::<Vec<FederatedIdentityRepresentation>>(vec![]),
                 )
                 .mount(&mock_server)
                 .await;
@@ -1036,7 +1039,9 @@ mod tests {
             let mock_server = MockServer::start().await;
 
             Mock::given(method("POST"))
-                .and(path("/admin/realms/master/users/123/federated-identity/google"))
+                .and(path(
+                    "/admin/realms/master/users/123/federated-identity/google",
+                ))
                 .and(header("Authorization", format!("Bearer {}", TEST_TOKEN)))
                 .respond_with(ResponseTemplate::new(204))
                 .mount(&mock_server)
@@ -1063,7 +1068,9 @@ mod tests {
             let mock_server = MockServer::start().await;
 
             Mock::given(method("POST"))
-                .and(path("/admin/realms/master/users/999/federated-identity/google"))
+                .and(path(
+                    "/admin/realms/master/users/999/federated-identity/google",
+                ))
                 .respond_with(ResponseTemplate::new(404))
                 .mount(&mock_server)
                 .await;
@@ -1104,7 +1111,9 @@ mod tests {
             let mock_server = MockServer::start().await;
 
             Mock::given(method("DELETE"))
-                .and(path("/admin/realms/master/users/123/federated-identity/google"))
+                .and(path(
+                    "/admin/realms/master/users/123/federated-identity/google",
+                ))
                 .and(header("Authorization", format!("Bearer {}", TEST_TOKEN)))
                 .respond_with(ResponseTemplate::new(204))
                 .mount(&mock_server)
@@ -1126,7 +1135,9 @@ mod tests {
             let mock_server = MockServer::start().await;
 
             Mock::given(method("DELETE"))
-                .and(path("/admin/realms/master/users/999/federated-identity/google"))
+                .and(path(
+                    "/admin/realms/master/users/999/federated-identity/google",
+                ))
                 .respond_with(ResponseTemplate::new(404))
                 .mount(&mock_server)
                 .await;

@@ -16,9 +16,7 @@ pub struct KeycloakClient {
 impl KeycloakClient {
     /// Create a new KeycloakClient with the specified base URL.
     pub fn new(base_url: impl Into<String>) -> Result<Self, ApiError> {
-        let client = Client::builder()
-            .build()
-            .map_err(ApiError::HttpError)?;
+        let client = Client::builder().build().map_err(ApiError::HttpError)?;
 
         Ok(Self {
             base_url: base_url.into().trim_end_matches('/').to_string(),
@@ -188,7 +186,10 @@ impl KeycloakClient {
         self.handle_response(response).await
     }
 
-    async fn handle_response<T: DeserializeOwned>(&self, response: Response) -> Result<T, ApiError> {
+    async fn handle_response<T: DeserializeOwned>(
+        &self,
+        response: Response,
+    ) -> Result<T, ApiError> {
         let status = response.status();
 
         if status.is_success() {
@@ -314,9 +315,8 @@ mod tests {
             .await;
 
         let client = KeycloakClient::new(mock_server.uri()).unwrap();
-        let result: Result<Vec<TestUser>, _> = client
-            .get("/admin/realms/master/users", TEST_TOKEN)
-            .await;
+        let result: Result<Vec<TestUser>, _> =
+            client.get("/admin/realms/master/users", TEST_TOKEN).await;
 
         assert!(matches!(result, Err(ApiError::Forbidden)));
     }
@@ -468,8 +468,14 @@ mod tests {
         let mock_server = MockServer::start().await;
 
         let expected_users = vec![
-            TestUser { id: "1".to_string(), username: "user1".to_string() },
-            TestUser { id: "2".to_string(), username: "user2".to_string() },
+            TestUser {
+                id: "1".to_string(),
+                username: "user1".to_string(),
+            },
+            TestUser {
+                id: "2".to_string(),
+                username: "user2".to_string(),
+            },
         ];
 
         Mock::given(method("GET"))
@@ -494,9 +500,10 @@ mod tests {
     async fn test_get_paginated_without_params() {
         let mock_server = MockServer::start().await;
 
-        let expected_users = vec![
-            TestUser { id: "1".to_string(), username: "user1".to_string() },
-        ];
+        let expected_users = vec![TestUser {
+            id: "1".to_string(),
+            username: "user1".to_string(),
+        }];
 
         Mock::given(method("GET"))
             .and(path("/admin/realms/master/users"))
@@ -548,9 +555,8 @@ mod tests {
             .await;
 
         let client = KeycloakClient::new(mock_server.uri()).unwrap();
-        let result: Result<Vec<TestUser>, _> = client
-            .get("/admin/realms/master/users", TEST_TOKEN)
-            .await;
+        let result: Result<Vec<TestUser>, _> =
+            client.get("/admin/realms/master/users", TEST_TOKEN).await;
 
         match result {
             Err(ApiError::ServerError(msg)) => {
@@ -597,9 +603,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_with_custom_client() {
-        let custom_client = Client::builder()
-            .build()
-            .unwrap();
+        let custom_client = Client::builder().build().unwrap();
 
         let client = KeycloakClient::with_client("http://localhost:8080", custom_client);
         assert_eq!(client.base_url(), "http://localhost:8080");

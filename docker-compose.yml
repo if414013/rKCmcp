@@ -23,6 +23,22 @@ services:
     networks:
       - mcp-network
 
+  mcp-server:
+    build: .
+    container_name: keycloak-mcp-server
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-master}
+      - MCP_PORT=${MCP_PORT:-3000}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    ports:
+      - "${MCP_PORT:-3000}:${MCP_PORT:-3000}"
+    networks:
+      - mcp-network
+
 networks:
   mcp-network:
     driver: bridge

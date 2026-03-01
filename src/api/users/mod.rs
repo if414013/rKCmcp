@@ -6,6 +6,30 @@ pub mod roles;
 pub mod sessions;
 pub mod types;
 
+pub use credentials::{
+    user_credential_delete, user_credentials_list, user_disable_credentials,
+    user_execute_actions_email, user_reset_password, user_send_verify_email,
+    UserCredentialDeleteParams, UserCredentialsListParams, UserDisableCredentialsParams,
+    UserExecuteActionsEmailParams, UserResetPasswordParams, UserSendVerifyEmailParams,
+};
+pub use groups::{
+    user_group_add, user_group_count, user_group_remove, user_groups_list, UserGroupAddParams,
+    UserGroupCountParams, UserGroupRemoveParams, UserGroupsListParams,
+};
+pub use roles::{
+    user_client_roles_add, user_client_roles_list, user_client_roles_remove, user_realm_roles_add,
+    user_realm_roles_available, user_realm_roles_list, user_realm_roles_remove,
+    UserClientRolesAddParams, UserClientRolesListParams, UserClientRolesRemoveParams,
+    UserRealmRolesAddParams, UserRealmRolesAvailableParams, UserRealmRolesListParams,
+    UserRealmRolesRemoveParams,
+};
+pub use sessions::{
+    user_consent_revoke, user_consents_list, user_federated_identity_add,
+    user_federated_identity_list, user_federated_identity_remove, user_logout, user_sessions_list,
+    UserConsentRevokeParams, UserConsentsListParams, UserFederatedIdentityAddParams,
+    UserFederatedIdentityListParams, UserFederatedIdentityRemoveParams, UserLogoutParams,
+    UserSessionsListParams,
+};
 pub use types::{CredentialRepresentation, FederatedIdentityRepresentation, UserRepresentation};
 
 use serde::Deserialize;
@@ -42,7 +66,9 @@ impl UserListParams {
         }
         if let Some(first) = self.first {
             if first < 0 {
-                return Err(ApiError::BadRequest("first must be non-negative".to_string()));
+                return Err(ApiError::BadRequest(
+                    "first must be non-negative".to_string(),
+                ));
             }
         }
         if let Some(max) = self.max {
@@ -121,7 +147,12 @@ impl UserCreateParams {
         if self.realm.trim().is_empty() {
             return Err(ApiError::BadRequest("realm is required".to_string()));
         }
-        if self.user.username.as_ref().is_none_or(|u| u.trim().is_empty()) {
+        if self
+            .user
+            .username
+            .as_ref()
+            .is_none_or(|u| u.trim().is_empty())
+        {
             return Err(ApiError::BadRequest("username is required".to_string()));
         }
         Ok(())
@@ -655,7 +686,9 @@ mod tests {
                 .and(path("/admin/realms/master/users"))
                 .and(query_param("first", "10"))
                 .and(query_param("max", "20"))
-                .respond_with(ResponseTemplate::new(200).set_body_json::<Vec<UserRepresentation>>(vec![]))
+                .respond_with(
+                    ResponseTemplate::new(200).set_body_json::<Vec<UserRepresentation>>(vec![]),
+                )
                 .mount(&mock_server)
                 .await;
 

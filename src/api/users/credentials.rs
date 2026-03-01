@@ -83,7 +83,9 @@ impl UserCredentialDeleteParams {
             return Err(ApiError::BadRequest("user_id is required".to_string()));
         }
         if self.credential_id.trim().is_empty() {
-            return Err(ApiError::BadRequest("credential_id is required".to_string()));
+            return Err(ApiError::BadRequest(
+                "credential_id is required".to_string(),
+            ));
         }
         Ok(())
     }
@@ -150,7 +152,10 @@ impl UserSendVerifyEmailParams {
             params.push(format!("client_id={}", urlencoding::encode(client_id)));
         }
         if let Some(ref redirect_uri) = self.redirect_uri {
-            params.push(format!("redirect_uri={}", urlencoding::encode(redirect_uri)));
+            params.push(format!(
+                "redirect_uri={}",
+                urlencoding::encode(redirect_uri)
+            ));
         }
 
         if params.is_empty() {
@@ -211,7 +216,10 @@ impl UserExecuteActionsEmailParams {
             params.push(format!("client_id={}", urlencoding::encode(client_id)));
         }
         if let Some(ref redirect_uri) = self.redirect_uri {
-            params.push(format!("redirect_uri={}", urlencoding::encode(redirect_uri)));
+            params.push(format!(
+                "redirect_uri={}",
+                urlencoding::encode(redirect_uri)
+            ));
         }
         if let Some(lifespan) = self.lifespan {
             params.push(format!("lifespan={}", lifespan));

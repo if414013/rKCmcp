@@ -6,7 +6,7 @@ use std::collections::HashMap;
 /// Represents a role within Keycloak, which can be assigned to users or groups.
 ///
 /// Roles can be realm-level or client-specific, and can be composite (containing other roles).
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RoleRepresentation {
     /// The unique identifier for the role
