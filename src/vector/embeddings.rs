@@ -40,7 +40,7 @@ impl EmbeddingService {
         let client = Client::builder()
             .timeout(std::time::Duration::from_secs(60))
             .build()
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let provider = if api_key.is_some() {
             EmbeddingProvider::OpenAI
@@ -92,7 +92,7 @@ impl EmbeddingService {
             .json(&request)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if !response.status().is_success() {
             let status = response.status();
@@ -105,7 +105,7 @@ impl EmbeddingService {
         let result: OpenAIEmbeddingResponse = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         Ok(result.data.into_iter().map(|d| d.embedding).collect())
     }

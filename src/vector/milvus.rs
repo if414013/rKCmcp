@@ -38,7 +38,7 @@ impl MilvusClient {
         let client = Client::builder()
             .timeout(std::time::Duration::from_secs(30))
             .build()
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         Ok(Self {
             client: Arc::new(client),
@@ -68,12 +68,12 @@ impl MilvusClient {
             .json(&payload)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let result: MilvusResponse<Value> = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if result.code != 0 && !result.message.as_ref().map(|m| m.contains("already exists")).unwrap_or(false) {
             return Err(ApiError::ServerError(
@@ -96,12 +96,12 @@ impl MilvusClient {
             .json(&payload)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let result: MilvusResponse<Value> = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
@@ -144,12 +144,12 @@ impl MilvusClient {
             .json(&payload)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let result: MilvusResponse<Value> = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
@@ -191,12 +191,12 @@ impl MilvusClient {
             .json(&payload)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let result: MilvusResponse<Vec<Vec<SearchHit>>> = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
@@ -239,12 +239,12 @@ impl MilvusClient {
             .json(&payload)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let result: MilvusResponse<CollectionStats> = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
@@ -271,12 +271,12 @@ impl MilvusClient {
             .json(&payload)
             .send()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         let result: MilvusResponse<Value> = response
             .json()
             .await
-            .map_err(|e| ApiError::HttpError(e))?;
+            .map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
