@@ -178,6 +178,3 @@ Explore the rest of the documentation for more in-depth technical details:
 - [Extending](./07-extending.md): Instructions for adding new tool categories or custom logic.
 - [Troubleshooting](./08-troubleshooting.md): Solutions for common connectivity issues.
 
----
-*Keycloak MCP Server Documentation - Version 1.0.0*
-*Built with Rust and the Model Context Protocol*

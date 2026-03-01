@@ -1,0 +1,84 @@
+site_name: Keycloak MCP Server
+site_description: AI-powered Keycloak administration through the Model Context Protocol
+site_url: https://if414013.github.io/rKCmcp/
+repo_url: https://github.com/if414013/rKCmcp
+repo_name: if414013/rKCmcp
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Overview: 01-overview.md
+  - Architecture: 02-architecture.md
+  - Request Flow: 03-request-flow.md
+  - Components:
+      - Keycloak Client: 04-components/keycloak-client.md
+      - MCP Server: 04-components/mcp-server.md
+      - OAuth Authentication: 04-components/oauth-auth.md
+      - Tool System: 04-components/tool-system.md
+  - API Reference:
+      - Overview: 05-api-reference/index.md
+      - Users: 05-api-reference/users.md
+      - Clients: 05-api-reference/clients.md
+      - Roles: 05-api-reference/roles.md
+      - Groups: 05-api-reference/groups.md
+      - Realms: 05-api-reference/realms.md
+      - Authentication: 05-api-reference/authentication.md
+      - Authorization: 05-api-reference/authorization.md
+      - Identity Providers: 05-api-reference/identity-providers.md
+      - Client Scopes: 05-api-reference/client-scopes.md
+  - Configuration: 06-configuration.md
+  - Extending: 07-extending.md
+  - Troubleshooting: 08-troubleshooting.md

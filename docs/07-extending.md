@@ -112,6 +112,7 @@ To reduce boilerplate, three macros are used for tool registration.
 
 **impl_list_tool!**
 Used for "list" or "search" operations.
+
 ```rust
 impl_list_tool!(
     users_list,
@@ -123,6 +124,7 @@ impl_list_tool!(
 
 **impl_action_tool!**
 Used for "delete", "update", or "execute" operations where no data payload is returned.
+
 ```rust
 impl_action_tool!(
     users_delete,
@@ -134,7 +136,8 @@ impl_action_tool!(
 
 ## Naming Conventions
 
-Consistency is critical for LLM discoverability and code maintainability.
+!!! tip "Consistency matters"
+    Consistency is critical for LLM discoverability and code maintainability. Follow these patterns for all new tools.
 
 | Item | Pattern | Example |
 | :--- | :--- | :--- |
@@ -144,7 +147,8 @@ Consistency is critical for LLM discoverability and code maintainability.
 
 ## Testing Patterns
 
-All new tools must be accompanied by tests in the `tests/` directory. We use `wiremock` to simulate Keycloak responses.
+!!! info "Test requirement"
+    All new tools must be accompanied by tests in the `tests/` directory. We use `wiremock` to simulate Keycloak responses.
 
 ### Test Structure
 
@@ -159,7 +163,7 @@ All new tools must be accompanied by tests in the `tests/` directory. We use `wi
 #[tokio::test]
 async fn test_my_tool_success() {
     let mock_server = MockServer::start().await;
-    
+
     Mock::given(method("GET"))
         .and(path("/admin/realms/test-realm/resource/123"))
         .respond_with(ResponseTemplate::new(200).set_body_json(json!({
@@ -171,12 +175,12 @@ async fn test_my_tool_success() {
 
     let client = KeycloakClient::new(mock_server.uri(), "admin".to_string(), "password".to_string());
     let handler = KeycloakToolHandler::new(client);
-    
+
     let params = json!({
         "realm": "test-realm",
         "id": "123"
     });
-    
+
     let result = handler.call_tool("my_tool", params).await.unwrap();
     assert!(result.contains("test-resource"));
 }

@@ -225,5 +225,3 @@ The architecture is designed to support future enhancements as the MCP specifica
 - **Enhanced Observability**: Future integration with OpenTelemetry will provide distributed tracing across the entire AI -> MCP -> Keycloak path, giving developers deep insights into performance and error rates.
 - **Schema Evolution**: The use of `serde` and a flexible tool registration system ensures that the server can gracefully handle future updates to the Keycloak Admin API and the MCP specification.
 
----
-*Note: This document focuses on high-level architecture. For specific tool implementations, see [API Reference](05-api-reference.md). For deployment instructions, see [Getting Started](01-getting-started.md).*

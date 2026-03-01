@@ -8,11 +8,11 @@ The following table summarizes all available configuration settings.
 
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| KEYCLOAK_URL | The base URL where the Keycloak server is accessible. This should include the protocol and port. | http://localhost:8080 | Yes |
-| KEYCLOAK_REALM | The target Keycloak realm used for authentication and management operations. | master | No |
-| MCP_PORT | The TCP port on which the Model Context Protocol server will listen for incoming connections. | 3000 | No |
-| LOG_LEVEL | Controls the verbosity of system logs. Supported values: trace, debug, info, warn, error. | info | No |
-| JWKS_CACHE_TTL | Duration in seconds to cache JSON Web Key Sets (JWKS) used for token validation. | 3600 | No |
+| `KEYCLOAK_URL` | The base URL where the Keycloak server is accessible. This should include the protocol and port. | `http://localhost:8080` | Yes |
+| `KEYCLOAK_REALM` | The target Keycloak realm used for authentication and management operations. | `master` | No |
+| `MCP_PORT` | The TCP port on which the Model Context Protocol server will listen for incoming connections. | `3000` | No |
+| `LOG_LEVEL` | Controls the verbosity of system logs. Supported values: `trace`, `debug`, `info`, `warn`, `error`. | `info` | No |
+| `JWKS_CACHE_TTL` | Duration in seconds to cache JSON Web Key Sets (JWKS) used for token validation. | `3600` | No |
 
 ## Configuration Loading Process
 
@@ -42,7 +42,8 @@ LOG_LEVEL=info
 JWKS_CACHE_TTL=3600
 ```
 
-Ensure this file is not committed to version control if it contains sensitive information in production environments.
+!!! warning "Do not commit secrets"
+    Ensure this file is not committed to version control if it contains sensitive information in production environments.
 
 ## Docker Compose Configuration
 
@@ -59,6 +60,7 @@ The Keycloak MCP Server is designed to work seamlessly within a containerized en
 - **Network**: Both services should reside on the same bridge network to allow the MCP server to communicate with Keycloak using the service name (e.g., `http://keycloak:8080`).
 
 ### Network Configuration example
+
 ```yaml
 services:
   keycloak:
@@ -112,6 +114,8 @@ The following rules are applied to configuration values during the initializatio
 
 While most users will stick to standard environment variables, the server's internal `Config` struct (defined in `src/config/mod.rs`) is designed to be extensible. Developers can modify the `from_env()` implementation to include additional security checks or integration with external configuration providers if necessary.
 
-For production deployments, it is recommended to use a secrets management system to inject the `KEYCLOAK_URL` and other sensitive parameters into the environment rather than relying on static files.
+!!! tip "Production deployments"
+    For production deployments, it is recommended to use a secrets management system to inject the `KEYCLOAK_URL` and other sensitive parameters into the environment rather than relying on static files.
 
-The server binds to `0.0.0.0` by default to ensure it can receive traffic from outside the container when running in Docker or Kubernetes environments. Ensure that your firewall or security groups allow traffic on the `MCP_PORT` configured.
+!!! info "Network binding"
+    The server binds to `0.0.0.0` by default to ensure it can receive traffic from outside the container when running in Docker or Kubernetes environments. Ensure that your firewall or security groups allow traffic on the configured `MCP_PORT`.
