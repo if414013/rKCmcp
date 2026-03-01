@@ -1,7 +1,9 @@
 //! Realm roles API module for Keycloak Admin REST API.
 
+mod composites;
 mod types;
 
+pub use composites::*;
 pub use types::*;
 
 use crate::api::{ApiError, KeycloakClient};

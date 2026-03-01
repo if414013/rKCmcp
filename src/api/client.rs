@@ -131,6 +131,27 @@ impl KeycloakClient {
         self.handle_empty_response(response).await
     }
 
+    /// Perform a DELETE request with a JSON body (for operations like removing composite roles).
+    pub async fn delete_with_body<T: Serialize>(
+        &self,
+        path: &str,
+        token: &str,
+        body: &T,
+    ) -> Result<(), ApiError> {
+        let url = format!("{}{}", self.base_url, path);
+
+        let response = self
+            .client
+            .delete(&url)
+            .header(header::AUTHORIZATION, format!("Bearer {}", token))
+            .header(header::ACCEPT, "application/json")
+            .json(body)
+            .send()
+            .await?;
+
+        self.handle_empty_response(response).await
+    }
+
     /// Perform a paginated GET request.
     ///
     /// Keycloak uses `first` (offset) and `max` (limit) query parameters for pagination.
