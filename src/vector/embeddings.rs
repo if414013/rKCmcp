@@ -70,22 +70,25 @@ impl EmbeddingService {
 
     pub async fn embed_single(&self, text: &str) -> Result<Vec<f32>, ApiError> {
         let results = self.embed(vec![text.to_string()]).await?;
-        results.into_iter().next().ok_or_else(|| {
-            ApiError::ServerError("No embedding returned".to_string())
-        })
+        results
+            .into_iter()
+            .next()
+            .ok_or_else(|| ApiError::ServerError("No embedding returned".to_string()))
     }
 
     async fn embed_openai(&self, texts: Vec<String>) -> Result<Vec<Vec<f32>>, ApiError> {
-        let api_key = self.api_key.as_ref().ok_or_else(|| {
-            ApiError::BadRequest("OpenAI API key required".to_string())
-        })?;
+        let api_key = self
+            .api_key
+            .as_ref()
+            .ok_or_else(|| ApiError::BadRequest("OpenAI API key required".to_string()))?;
 
         let request = OpenAIEmbeddingRequest {
             model: self.model.clone(),
             input: texts,
         };
 
-        let response = self.client
+        let response = self
+            .client
             .post("https://api.openai.com/v1/embeddings")
             .header("Authorization", format!("Bearer {}", api_key))
             .header("Content-Type", "application/json")
@@ -98,23 +101,22 @@ impl EmbeddingService {
             let status = response.status();
             let body = response.text().await.unwrap_or_default();
             return Err(ApiError::ServerError(format!(
-                "OpenAI API error {}: {}", status, body
+                "OpenAI API error {}: {}",
+                status, body
             )));
         }
 
-        let result: OpenAIEmbeddingResponse = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: OpenAIEmbeddingResponse = response.json().await.map_err(ApiError::HttpError)?;
 
         Ok(result.data.into_iter().map(|d| d.embedding).collect())
     }
 
     async fn embed_local(&self, texts: Vec<String>) -> Result<Vec<Vec<f32>>, ApiError> {
-        let embeddings: Vec<Vec<f32>> = texts.iter()
+        let embeddings: Vec<Vec<f32>> = texts
+            .iter()
             .map(|text| self.simple_hash_embedding(text))
             .collect();
-        
+
         Ok(embeddings)
     }
 
@@ -124,12 +126,12 @@ impl EmbeddingService {
 
         let mut embedding = vec![0.0f32; self.dimension as usize];
         let words: Vec<&str> = text.split_whitespace().collect();
-        
+
         for (i, word) in words.iter().enumerate() {
             let mut hasher = DefaultHasher::new();
             word.to_lowercase().hash(&mut hasher);
             let hash = hasher.finish();
-            
+
             for j in 0..8 {
                 let idx = ((hash >> (j * 8)) as usize + i) % self.dimension as usize;
                 let val = ((hash >> (j * 4)) & 0xFF) as f32 / 255.0 - 0.5;
@@ -163,7 +165,7 @@ mod tests {
         let service = EmbeddingService::new("local", 384, None).unwrap();
         let embedding = service.simple_hash_embedding("hello world");
         assert_eq!(embedding.len(), 384);
-        
+
         let magnitude: f32 = embedding.iter().map(|x| x * x).sum::<f32>().sqrt();
         assert!((magnitude - 1.0).abs() < 0.01);
     }

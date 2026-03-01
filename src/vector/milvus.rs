@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::sync::Arc;
 
+use super::types::{IndexStats, SearchResult};
 use crate::api::error::ApiError;
-use super::types::{SearchResult, IndexStats};
 
 #[derive(Clone)]
 pub struct MilvusClient {
@@ -49,7 +49,7 @@ impl MilvusClient {
 
     pub async fn create_collection(&self, collection_name: &str) -> Result<(), ApiError> {
         let url = format!("{}/collections/create", self.base_url);
-        
+
         let payload = json!({
             "collectionName": collection_name,
             "dimension": self.dimension,
@@ -63,21 +63,27 @@ impl MilvusClient {
             }
         });
 
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&payload)
             .send()
             .await
             .map_err(ApiError::HttpError)?;
 
-        let result: MilvusResponse<Value> = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: MilvusResponse<Value> = response.json().await.map_err(ApiError::HttpError)?;
 
-        if result.code != 0 && !result.message.as_ref().map(|m| m.contains("already exists")).unwrap_or(false) {
+        if result.code != 0
+            && !result
+                .message
+                .as_ref()
+                .map(|m| m.contains("already exists"))
+                .unwrap_or(false)
+        {
             return Err(ApiError::ServerError(
-                result.message.unwrap_or_else(|| "Unknown Milvus error".to_string())
+                result
+                    .message
+                    .unwrap_or_else(|| "Unknown Milvus error".to_string()),
             ));
         }
 
@@ -86,30 +92,31 @@ impl MilvusClient {
 
     pub async fn collection_exists(&self, collection_name: &str) -> Result<bool, ApiError> {
         let url = format!("{}/collections/has", self.base_url);
-        
+
         let payload = json!({
             "collectionName": collection_name
         });
 
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&payload)
             .send()
             .await
             .map_err(ApiError::HttpError)?;
 
-        let result: MilvusResponse<Value> = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: MilvusResponse<Value> = response.json().await.map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
-                result.message.unwrap_or_else(|| "Unknown Milvus error".to_string())
+                result
+                    .message
+                    .unwrap_or_else(|| "Unknown Milvus error".to_string()),
             ));
         }
 
-        Ok(result.data
+        Ok(result
+            .data
             .and_then(|d| d.get("has").and_then(|v| v.as_bool()))
             .unwrap_or(false))
     }
@@ -122,8 +129,9 @@ impl MilvusClient {
         metadata: Vec<Value>,
     ) -> Result<u64, ApiError> {
         let url = format!("{}/entities/insert", self.base_url);
-        
-        let data: Vec<Value> = ids.into_iter()
+
+        let data: Vec<Value> = ids
+            .into_iter()
             .zip(vectors.into_iter())
             .zip(metadata.into_iter())
             .map(|((id, vector), meta)| {
@@ -139,25 +147,26 @@ impl MilvusClient {
             "data": data
         });
 
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&payload)
             .send()
             .await
             .map_err(ApiError::HttpError)?;
 
-        let result: MilvusResponse<Value> = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: MilvusResponse<Value> = response.json().await.map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
-                result.message.unwrap_or_else(|| "Unknown Milvus error".to_string())
+                result
+                    .message
+                    .unwrap_or_else(|| "Unknown Milvus error".to_string()),
             ));
         }
 
-        Ok(result.data
+        Ok(result
+            .data
             .and_then(|d| d.get("insertCount").and_then(|v| v.as_u64()))
             .unwrap_or(0))
     }
@@ -171,7 +180,7 @@ impl MilvusClient {
         output_fields: Vec<&str>,
     ) -> Result<Vec<SearchResult>, ApiError> {
         let url = format!("{}/entities/search", self.base_url);
-        
+
         let mut payload = json!({
             "collectionName": collection_name,
             "data": [vector],
@@ -186,35 +195,40 @@ impl MilvusClient {
             payload["filter"] = json!(f);
         }
 
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&payload)
             .send()
             .await
             .map_err(ApiError::HttpError)?;
 
-        let result: MilvusResponse<Vec<Vec<SearchHit>>> = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: MilvusResponse<Vec<Vec<SearchHit>>> =
+            response.json().await.map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
-                result.message.unwrap_or_else(|| "Unknown Milvus error".to_string())
+                result
+                    .message
+                    .unwrap_or_else(|| "Unknown Milvus error".to_string()),
             ));
         }
 
-        let hits = result.data
+        let hits = result
+            .data
             .and_then(|d| d.into_iter().next())
             .unwrap_or_default();
 
-        let results = hits.into_iter()
+        let results = hits
+            .into_iter()
             .map(|hit| {
-                let text = hit.entity.get("text")
+                let text = hit
+                    .entity
+                    .get("text")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string();
-                
+
                 SearchResult {
                     id: hit.id,
                     score: 1.0 - hit.distance,
@@ -229,26 +243,27 @@ impl MilvusClient {
 
     pub async fn get_stats(&self, collection_name: &str) -> Result<IndexStats, ApiError> {
         let url = format!("{}/collections/get_stats", self.base_url);
-        
+
         let payload = json!({
             "collectionName": collection_name
         });
 
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&payload)
             .send()
             .await
             .map_err(ApiError::HttpError)?;
 
-        let result: MilvusResponse<CollectionStats> = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: MilvusResponse<CollectionStats> =
+            response.json().await.map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
-                result.message.unwrap_or_else(|| "Unknown Milvus error".to_string())
+                result
+                    .message
+                    .unwrap_or_else(|| "Unknown Milvus error".to_string()),
             ));
         }
 
@@ -261,26 +276,26 @@ impl MilvusClient {
 
     pub async fn delete_collection(&self, collection_name: &str) -> Result<(), ApiError> {
         let url = format!("{}/collections/drop", self.base_url);
-        
+
         let payload = json!({
             "collectionName": collection_name
         });
 
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&payload)
             .send()
             .await
             .map_err(ApiError::HttpError)?;
 
-        let result: MilvusResponse<Value> = response
-            .json()
-            .await
-            .map_err(ApiError::HttpError)?;
+        let result: MilvusResponse<Value> = response.json().await.map_err(ApiError::HttpError)?;
 
         if result.code != 0 {
             return Err(ApiError::ServerError(
-                result.message.unwrap_or_else(|| "Unknown Milvus error".to_string())
+                result
+                    .message
+                    .unwrap_or_else(|| "Unknown Milvus error".to_string()),
             ));
         }
 
