@@ -13,6 +13,34 @@ An MCP (Model Context Protocol) server for the Keycloak Admin API, enabling AI m
 - **Authorization**: Fine-grained authorization resources, policies, and permissions.
 - **OAuth 2.1 Support**: Built-in support for secure OAuth 2.1 resource server implementation.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Client
+        AI[AI Assistant]
+    end
+    subgraph MCP Server
+        Auth[JWT Auth]
+        MCP[MCP Protocol]
+        Tools[150+ Tools]
+        KC[Keycloak Client]
+    end
+    subgraph Keycloak
+        API[Admin REST API]
+        OIDC[OAuth/OIDC]
+    end
+
+    AI -->|MCP over HTTP| Auth
+    Auth -->|Validate| OIDC
+    Auth --> MCP --> Tools --> KC
+    KC -->|HTTP| API
+```
+
+The server sits between AI assistants and Keycloak, translating MCP tool calls into Admin REST API requests. All requests are authenticated via JWT tokens validated against Keycloak's own OIDC endpoints, so the AI operates within the caller's security context.
+
+For detailed architecture documentation, see [Architecture](./docs/02-architecture.md).
+
 ## Prerequisites
 
 - **Rust**: 1.75 or later.
