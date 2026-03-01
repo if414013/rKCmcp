@@ -1,0 +1,1884 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI-powered Keycloak administration through the Model Context Protocol">
+      
+      
+      
+        <link rel="canonical" href="https://if414013.github.io/rKCmcp/05-api-reference/users/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../clients/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Users - Keycloak MCP Server</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta name="google-site-verification" content="" />
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#users-api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Keycloak MCP Server" class="md-header__button md-logo" aria-label="Keycloak MCP Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Keycloak MCP Server
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Users
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/if414013/rKCmcp" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    if414013/rKCmcp
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../01-overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../02-architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../03-request-flow/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Request Flow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../04-components/keycloak-client/" class="md-tabs__link">
+          
+  
+  
+  Components
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../06-configuration/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Configuration
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../07-extending/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Extending
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../08-troubleshooting/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Troubleshooting
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Keycloak MCP Server" class="md-nav__button md-logo" aria-label="Keycloak MCP Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Keycloak MCP Server
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/if414013/rKCmcp" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    if414013/rKCmcp
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-request-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Request Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/keycloak-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keycloak Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/mcp-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/oauth-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAuth Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/tool-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-crud-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core CRUD Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core CRUD Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtering-and-pagination-in-user_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtering and Pagination in user_list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credentials-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credentials Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group Membership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#role-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role Mappings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessions-and-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessions and Identity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#userrepresentation-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRepresentation Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Usage Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-and-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security and Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance-and-auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance and Auditing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../realms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity-providers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Identity Providers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client-scopes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Scopes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-extending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-crud-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core CRUD Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core CRUD Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtering-and-pagination-in-user_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtering and Pagination in user_list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credentials-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credentials Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group Membership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#role-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role Mappings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessions-and-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessions and Identity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#userrepresentation-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRepresentation Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Usage Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-and-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security and Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance-and-auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance and Auditing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="users-api-reference">Users API Reference<a class="headerlink" href="#users-api-reference" title="Permanent link">&para;</a></h1>
+<p>The Users API provides a comprehensive suite of tools for managing the lifecycle, security, and access control of users within a Keycloak realm. This reference documentation covers operations ranging from basic CRUD to complex role mappings and session management.</p>
+<h2 id="core-crud-operations">Core CRUD Operations<a class="headerlink" href="#core-crud-operations" title="Permanent link">&para;</a></h2>
+<p>These tools form the foundation of user management, allowing for the creation, retrieval, modification, and deletion of user records.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>user_list</strong></td>
+<td>Searches for users based on criteria such as email, username, or first/last name. Supports pagination via <code>first</code> and <code>max</code>.</td>
+<td><code>realm</code>, <code>search</code>, <code>email</code>, <code>username</code>, <code>first</code>, <code>max</code></td>
+</tr>
+<tr>
+<td><strong>user_get</strong></td>
+<td>Fetches the full <code>UserRepresentation</code> of a specific user. This is typically used to inspect user attributes, group memberships, and account status.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_create</strong></td>
+<td>Registers a new user account. Requires a <code>UserRepresentation</code> object which must at least contain a unique username.</td>
+<td><code>realm</code>, <code>user</code> (UserRepresentation)</td>
+</tr>
+<tr>
+<td><strong>user_update</strong></td>
+<td>Updates an existing user's details. Only the fields provided in the <code>UserRepresentation</code> will be updated; other fields remain unchanged.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>user</code></td>
+</tr>
+<tr>
+<td><strong>user_delete</strong></td>
+<td>Removes a user and all associated data (roles, groups, credentials) from the realm. This action is irreversible.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="filtering-and-pagination-in-user_list">Filtering and Pagination in user_list<a class="headerlink" href="#filtering-and-pagination-in-user_list" title="Permanent link">&para;</a></h3>
+<p>When using <code>user_list</code>, you can refine your search using the following optional parameters:
+- <code>search</code>: A global search string applied to username, first name, last name, and email.
+- <code>username</code>, <code>email</code>, <code>firstName</code>, <code>lastName</code>: Specific field filters.
+- <code>first</code>: The index of the first result to return (default is 0).
+- <code>max</code>: The maximum number of results to return (default is 100).</p>
+<h2 id="credentials-management">Credentials Management<a class="headerlink" href="#credentials-management" title="Permanent link">&para;</a></h2>
+<p>Manage user authentication factors, including passwords, OTP devices, and email verification status.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>user_reset_password</strong></td>
+<td>Sets a new password for the user. If <code>temporary</code> is set to true, the user will be required to change it upon their next login.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>password</code>, <code>temporary</code></td>
+</tr>
+<tr>
+<td><strong>user_credentials_list</strong></td>
+<td>Returns a list of all credentials (passwords, OTP, WebAuthn) associated with the user, including their metadata.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_credential_delete</strong></td>
+<td>Deletes a specific credential by its ID. Useful for removing lost OTP devices or old passwords.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>credential_id</code></td>
+</tr>
+<tr>
+<td><strong>user_disable_credentials</strong></td>
+<td>Disables all credentials of the specified types (e.g., "password", "otp") for the user.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>credential_types</code></td>
+</tr>
+<tr>
+<td><strong>user_send_verify_email</strong></td>
+<td>Sends a system-generated email containing a link for the user to verify their email address.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_execute_actions_email</strong></td>
+<td>Triggers specific account actions via email, such as <code>UPDATE_PASSWORD</code>, <code>UPDATE_PROFILE</code>, or <code>VERIFY_EMAIL</code>.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>actions</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="group-membership">Group Membership<a class="headerlink" href="#group-membership" title="Permanent link">&para;</a></h2>
+<p>Groups provide a way to organize users and apply bulk role mappings.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>user_groups_list</strong></td>
+<td>Retrieves all groups the user is a direct member of.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_group_add</strong></td>
+<td>Associates a user with a group. The user will inherit all roles mapped to that group.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>group_id</code></td>
+</tr>
+<tr>
+<td><strong>user_group_remove</strong></td>
+<td>Dissociates a user from a group, removing any roles inherited from that group.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>group_id</code></td>
+</tr>
+<tr>
+<td><strong>user_group_count</strong></td>
+<td>Returns the total count of groups the user belongs to. Useful for UI badges or summary views.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="role-mappings">Role Mappings<a class="headerlink" href="#role-mappings" title="Permanent link">&para;</a></h2>
+<p>Roles are the primary mechanism for access control. Users can have roles assigned at the realm level or specifically for individual clients.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>user_realm_roles_list</strong></td>
+<td>Lists all realm-level roles currently assigned to the user.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_realm_roles_add</strong></td>
+<td>Assigns one or more realm roles to the user. Roles should be passed as a list of role objects.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>roles</code></td>
+</tr>
+<tr>
+<td><strong>user_realm_roles_remove</strong></td>
+<td>Removes assigned realm roles from the user.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>roles</code></td>
+</tr>
+<tr>
+<td><strong>user_realm_roles_available</strong></td>
+<td>Lists all realm roles that exist but are NOT currently assigned to the user.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_client_roles_list</strong></td>
+<td>Lists all roles assigned to the user for a specific client application.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>client_id</code></td>
+</tr>
+<tr>
+<td><strong>user_client_roles_add</strong></td>
+<td>Assigns client-specific roles to the user.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>client_id</code>, <code>roles</code></td>
+</tr>
+<tr>
+<td><strong>user_client_roles_remove</strong></td>
+<td>Revokes client-specific roles from the user.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>client_id</code>, <code>roles</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sessions-and-identity">Sessions and Identity<a class="headerlink" href="#sessions-and-identity" title="Permanent link">&para;</a></h2>
+<p>Tools for auditing active logins and managing external identity provider (IdP) links.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>user_sessions_list</strong></td>
+<td>Retrieves a list of active browser sessions for the user, including IP address, start time, and client application.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_logout</strong></td>
+<td>Invalidates all active sessions for the user across all clients, forcing a re-login.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_consents_list</strong></td>
+<td>Lists all OAuth2/OpenID Connect consents granted by the user to various clients.</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_consent_revoke</strong></td>
+<td>Removes a user's consent for a specific client, requiring them to re-approve permissions on next login.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>client_id</code></td>
+</tr>
+<tr>
+<td><strong>user_federated_identity_list</strong></td>
+<td>Lists all social or SAML/OIDC identity providers linked to the user account (e.g., Google, GitHub).</td>
+<td><code>realm</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td><strong>user_federated_identity_add</strong></td>
+<td>Manually links a user to an identity in an external provider.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>provider</code>, <code>identity</code></td>
+</tr>
+<tr>
+<td><strong>user_federated_identity_remove</strong></td>
+<td>Removes the link between the user and an external identity provider.</td>
+<td><code>realm</code>, <code>user_id</code>, <code>provider</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="userrepresentation-schema">UserRepresentation Schema<a class="headerlink" href="#userrepresentation-schema" title="Permanent link">&para;</a></h2>
+<p>The <code>UserRepresentation</code> object is used for both input and output. Below are the most commonly used fields:</p>
+<ul>
+<li><strong>id</strong>: The unique UUID assigned by Keycloak. (Read-only)</li>
+<li><strong>username</strong>: The login name for the user. (Required)</li>
+<li><strong>email</strong>: The user's primary email address.</li>
+<li><strong>firstName</strong>: The user's given name.</li>
+<li><strong>lastName</strong>: The user's family name.</li>
+<li><strong>enabled</strong>: Set to <code>true</code> to allow the user to log in.</li>
+<li><strong>emailVerified</strong>: Whether the email address has been confirmed via the verification link.</li>
+<li><strong>attributes</strong>: A map of custom metadata (e.g., <code>{"department": ["Sales"], "employeeId": ["12345"]}</code>).</li>
+<li><strong>requiredActions</strong>: A list of actions the user must complete upon login (e.g., <code>["UPDATE_PASSWORD", "CONFIGURE_TOTP"]</code>).</li>
+<li><strong>federationLink</strong>: The ID of the storage provider if the user is synced from LDAP or Active Directory.</li>
+<li><strong>groups</strong>: A list of group names or paths the user should be added to.</li>
+<li><strong>notBefore</strong>: A timestamp before which tokens issued for this user are invalid.</li>
+</ul>
+<h2 id="ai-usage-examples">AI Usage Examples<a class="headerlink" href="#ai-usage-examples" title="Permanent link">&para;</a></h2>
+<p>The following prompts illustrate how an AI agent can utilize these tools to perform common administrative tasks.</p>
+<h3 id="user-discovery">User Discovery<a class="headerlink" href="#user-discovery" title="Permanent link">&para;</a></h3>
+<ul>
+<li>"Find all users in the 'internal' realm with an @example.com email address."</li>
+<li>"Show me the details for the user with ID '550e8400-e29b-41d4-a716-446655440000'."</li>
+<li>"Check how many users are currently registered in the 'customer-portal' realm."</li>
+</ul>
+<h3 id="account-setup">Account Setup<a class="headerlink" href="#account-setup" title="Permanent link">&para;</a></h3>
+<ul>
+<li>"Create a new user 'bwayne' in the 'gotham' realm with email 'bruce@wayne.corp' and set his first name to 'Bruce'."</li>
+<li>"Register a new user 'clark.kent' and make sure he is required to change his password on his first login."</li>
+</ul>
+<h3 id="security-and-access">Security and Access<a class="headerlink" href="#security-and-access" title="Permanent link">&para;</a></h3>
+<ul>
+<li>"Reset the password for user 'joker' to 'P@ssword123' and make it temporary."</li>
+<li>"Send a verification email to 'harley.quinn' so she can confirm her account."</li>
+<li>"Give user 'abc-123' the 'admin' realm role."</li>
+<li>"Remove the 'editor' role from user 'xyz-789' for the 'blog-app' client."</li>
+</ul>
+<h3 id="maintenance-and-auditing">Maintenance and Auditing<a class="headerlink" href="#maintenance-and-auditing" title="Permanent link">&para;</a></h3>
+<ul>
+<li>"List all active sessions for 'lex.luthor' and log him out of all devices."</li>
+<li>"Which groups does user 'diana.prince' belong to?"</li>
+<li>"Unlink the GitHub account from user 'victor.stone' in the 'justice-league' realm."</li>
+<li>"Delete the user account with ID 'dead-beef-1234' from the master realm."</li>
+</ul>
+<h2 id="additional-resources">Additional Resources<a class="headerlink" href="#additional-resources" title="Permanent link">&para;</a></h2>
+<p>For exhaustive details on specific API behaviors, internal logic, or advanced configurations, please consult the:
+- <a href="https://www.keycloak.org/docs-api/latest/rest-api/index.html">Keycloak Administration REST API Documentation</a>
+- <a href="https://www.keycloak.org/docs-api/latest/javadocs/org/keycloak/representations/idm/UserRepresentation.html">Keycloak User Representation Java Docs</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

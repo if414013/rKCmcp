@@ -1,0 +1,2701 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI-powered Keycloak administration through the Model Context Protocol">
+      
+      
+      
+        <link rel="canonical" href="https://if414013.github.io/rKCmcp/05-api-reference/clients/">
+      
+      
+        <link rel="prev" href="../users/">
+      
+      
+        <link rel="next" href="../roles/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Clients - Keycloak MCP Server</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta name="google-site-verification" content="" />
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#clients-api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Keycloak MCP Server" class="md-header__button md-logo" aria-label="Keycloak MCP Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Keycloak MCP Server
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Clients
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/if414013/rKCmcp" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    if414013/rKCmcp
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../01-overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../02-architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../03-request-flow/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Request Flow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../04-components/keycloak-client/" class="md-tabs__link">
+          
+  
+  
+  Components
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../06-configuration/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Configuration
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../07-extending/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Extending
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../08-troubleshooting/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Troubleshooting
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Keycloak MCP Server" class="md-nav__button md-logo" aria-label="Keycloak MCP Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Keycloak MCP Server
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/if414013/rKCmcp" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    if414013/rKCmcp
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-request-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Request Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/keycloak-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keycloak Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/mcp-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/oauth-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAuth Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-components/tool-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-crud-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core CRUD Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core CRUD Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usage-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credentials-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credentials and Secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Roles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope Mappings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocol-mappers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Mappers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Account
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientrepresentation-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClientRepresentation Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rolerepresentation-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleRepresentation Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocolmapperrepresentation-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ProtocolMapperRepresentation Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Usage Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-and-updating-a-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding and Updating a Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managing-client-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing Client Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auditing-client-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing Client Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-protocol-mappers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Protocol Mappers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-client-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk Client Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Details
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-ids-vs-client-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal IDs vs Client IDs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination-and-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination and Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keycloak-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keycloak Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-table-of-tool-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary Table of Tool Groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-parameter-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Parameter Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Parameter Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#realm-wide-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Realm-wide Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Identifiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-mapper-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Mapper Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Scenarios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-scopes-vs-scope-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Scopes vs Scope Mappings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Certificate Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-account-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Account User
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite-roles-in-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Composite Roles in Clients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-is-my-client-update-failing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is my client update failing?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-cant-i-find-my-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why can't I find my client?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret-regeneration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secret Regeneration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope-mapping-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope Mapping Issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-mapper-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Mapper Not Working
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../realms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity-providers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Identity Providers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client-scopes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Scopes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-extending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-crud-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core CRUD Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core CRUD Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usage-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credentials-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credentials and Secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Roles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope Mappings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocol-mappers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Mappers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Account
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientrepresentation-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClientRepresentation Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rolerepresentation-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleRepresentation Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocolmapperrepresentation-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ProtocolMapperRepresentation Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Usage Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-and-updating-a-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding and Updating a Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managing-client-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing Client Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auditing-client-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing Client Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-protocol-mappers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Protocol Mappers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-client-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk Client Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Details
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-ids-vs-client-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal IDs vs Client IDs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination-and-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination and Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keycloak-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keycloak Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-table-of-tool-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary Table of Tool Groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-parameter-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Parameter Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Parameter Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#realm-wide-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Realm-wide Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Identifiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-mapper-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Mapper Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Scenarios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-scopes-vs-scope-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Scopes vs Scope Mappings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Certificate Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-account-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Account User
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite-roles-in-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Composite Roles in Clients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-is-my-client-update-failing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is my client update failing?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-cant-i-find-my-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why can't I find my client?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret-regeneration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secret Regeneration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope-mapping-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope Mapping Issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-mapper-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Mapper Not Working
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="clients-api-reference">Clients API Reference<a class="headerlink" href="#clients-api-reference" title="Permanent link">&para;</a></h1>
+<p>The Clients API provides tools for managing Keycloak clients, their roles, secrets, scope mappings, and protocol mappers. Clients are entities that can request Keycloak to authenticate a user.</p>
+<h2 id="core-crud-operations">Core CRUD Operations<a class="headerlink" href="#core-crud-operations" title="Permanent link">&para;</a></h2>
+<p>These tools manage the lifecycle of client entities within a realm.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_list</td>
+<td>List all clients in a realm with optional filtering.</td>
+<td><code>realm</code>, <code>clientId</code> (optional), <code>search</code> (optional), <code>first</code>, <code>max</code></td>
+</tr>
+<tr>
+<td>client_get</td>
+<td>Retrieve a specific client by its internal ID.</td>
+<td><code>realm</code>, <code>id</code> (internal UUID)</td>
+</tr>
+<tr>
+<td>client_create</td>
+<td>Register a new client in the specified realm.</td>
+<td><code>realm</code>, <code>client</code> (ClientRepresentation object)</td>
+</tr>
+<tr>
+<td>client_update</td>
+<td>Update an existing client configuration.</td>
+<td><code>realm</code>, <code>id</code>, <code>client</code> (Updated ClientRepresentation)</td>
+</tr>
+<tr>
+<td>client_delete</td>
+<td>Remove a client from the realm.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="usage-notes">Usage Notes<a class="headerlink" href="#usage-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Use <code>client_list</code> with the <code>clientId</code> parameter to find the internal ID (UUID) if you only have the human-readable ID.</li>
+<li>The <code>id</code> parameter required by most other tools is the internal UUID, not the <code>clientId</code>.</li>
+</ul>
+<hr />
+<h2 id="credentials-and-secrets">Credentials and Secrets<a class="headerlink" href="#credentials-and-secrets" title="Permanent link">&para;</a></h2>
+<p>Tools for managing client authentication credentials, including client secrets and certificates.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_secret_get</td>
+<td>Retrieve the current client secret.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_secret_regenerate</td>
+<td>Generate a new client secret, invalidating the old one.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_registration_token_get</td>
+<td>Get the registration access token for the client.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_registration_token_regenerate</td>
+<td>Regenerate the registration access token.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_certificates_get</td>
+<td>Get certificate information for a specific attribute.</td>
+<td><code>realm</code>, <code>id</code>, <code>attr</code></td>
+</tr>
+<tr>
+<td>client_certificate_generate</td>
+<td>Generate a new certificate and key pair.</td>
+<td><code>realm</code>, <code>id</code>, <code>attr</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="client-roles">Client Roles<a class="headerlink" href="#client-roles" title="Permanent link">&para;</a></h2>
+<p>Manage roles that are specific to a single client (as opposed to realm-wide roles).</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_roles_list</td>
+<td>List all roles defined for a specific client.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_role_get</td>
+<td>Retrieve details of a specific client role by name.</td>
+<td><code>realm</code>, <code>id</code>, <code>role_name</code></td>
+</tr>
+<tr>
+<td>client_role_create</td>
+<td>Create a new role for the client.</td>
+<td><code>realm</code>, <code>id</code>, <code>role</code> (RoleRepresentation)</td>
+</tr>
+<tr>
+<td>client_role_update</td>
+<td>Update an existing client role.</td>
+<td><code>realm</code>, <code>id</code>, <code>role_name</code>, <code>role</code></td>
+</tr>
+<tr>
+<td>client_role_delete</td>
+<td>Delete a role from the client.</td>
+<td><code>realm</code>, <code>id</code>, <code>role_name</code></td>
+</tr>
+<tr>
+<td>client_role_users_list</td>
+<td>List users who have been assigned this client role.</td>
+<td><code>realm</code>, <code>id</code>, <code>role_name</code></td>
+</tr>
+<tr>
+<td>client_role_groups_list</td>
+<td>List groups that have been assigned this client role.</td>
+<td><code>realm</code>, <code>id</code>, <code>role_name</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="scope-mappings">Scope Mappings<a class="headerlink" href="#scope-mappings" title="Permanent link">&para;</a></h2>
+<p>Manage which roles (realm or client) are mapped to a client's scope. This determines which roles can be included in the access token for this client.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_scope_mappings_realm_list</td>
+<td>List realm-level roles in the client's scope.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_scope_mappings_realm_add</td>
+<td>Add realm-level roles to the client's scope.</td>
+<td><code>realm</code>, <code>id</code>, <code>roles</code> (List of RoleRepresentations)</td>
+</tr>
+<tr>
+<td>client_scope_mappings_realm_remove</td>
+<td>Remove realm-level roles from the client's scope.</td>
+<td><code>realm</code>, <code>id</code>, <code>roles</code></td>
+</tr>
+<tr>
+<td>client_scope_mappings_client_list</td>
+<td>List roles of a target client in this client's scope.</td>
+<td><code>realm</code>, <code>id</code>, <code>client</code> (target client UUID)</td>
+</tr>
+<tr>
+<td>client_scope_mappings_client_add</td>
+<td>Add roles of a target client to this client's scope.</td>
+<td><code>realm</code>, <code>id</code>, <code>client</code>, <code>roles</code></td>
+</tr>
+<tr>
+<td>client_scope_mappings_client_remove</td>
+<td>Remove roles of a target client from the scope.</td>
+<td><code>realm</code>, <code>id</code>, <code>client</code>, <code>roles</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="protocol-mappers">Protocol Mappers<a class="headerlink" href="#protocol-mappers" title="Permanent link">&para;</a></h2>
+<p>Manage protocol mappers which map user attributes to tokens or assertions.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_protocol_mappers_list</td>
+<td>List all protocol mappers for a client.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+<tr>
+<td>client_protocol_mapper_get</td>
+<td>Get a specific protocol mapper by its ID.</td>
+<td><code>realm</code>, <code>id</code>, <code>mapper_id</code></td>
+</tr>
+<tr>
+<td>client_protocol_mapper_create</td>
+<td>Create a new protocol mapper for the client.</td>
+<td><code>realm</code>, <code>id</code>, <code>mapper</code> (ProtocolMapperRepresentation)</td>
+</tr>
+<tr>
+<td>client_protocol_mapper_update</td>
+<td>Update an existing protocol mapper.</td>
+<td><code>realm</code>, <code>id</code>, <code>mapper_id</code>, <code>mapper</code></td>
+</tr>
+<tr>
+<td>client_protocol_mapper_delete</td>
+<td>Remove a protocol mapper from the client.</td>
+<td><code>realm</code>, <code>id</code>, <code>mapper_id</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="service-account">Service Account<a class="headerlink" href="#service-account" title="Permanent link">&para;</a></h2>
+<p>Manage the service account user associated with a client (when service accounts are enabled).</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+<th>Key Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_service_account_user_get</td>
+<td>Get the dedicated service account user for this client.</td>
+<td><code>realm</code>, <code>id</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="clientrepresentation-object">ClientRepresentation Object<a class="headerlink" href="#clientrepresentation-object" title="Permanent link">&para;</a></h2>
+<p>When creating or updating clients, you provide a <code>ClientRepresentation</code>. Key fields include:</p>
+<ul>
+<li><code>id</code>: Internal UUID (read-only on create).</li>
+<li><code>clientId</code>: The human-readable ID used in OIDC/SAML requests.</li>
+<li><code>name</code>: Display name.</li>
+<li><code>description</code>: Text description.</li>
+<li><code>enabled</code>: Boolean, whether the client is active.</li>
+<li><code>protocol</code>: Usually "openid-connect" or "saml".</li>
+<li><code>publicClient</code>: Boolean. If false, it's a confidential client requiring a secret.</li>
+<li><code>bearerOnly</code>: Boolean. For services that only verify tokens.</li>
+<li><code>serviceAccountsEnabled</code>: Boolean. Enables the service account for this client.</li>
+<li><code>redirectUris</code>: List of valid callback URLs.</li>
+<li><code>webOrigins</code>: List of valid origins for CORS.</li>
+<li><code>rootUrl</code>: Root URL of the application.</li>
+<li><code>baseUrl</code>: Base URL of the application.</li>
+<li><code>adminUrl</code>: URL for administration operations.</li>
+<li><code>clientAuthenticatorType</code>: Authenticator type (e.g., "client-secret").</li>
+<li><code>secret</code>: The client secret (write-only).</li>
+<li><code>attributes</code>: Map of string keys and values for specific configurations.</li>
+<li><code>pkce.code.challenge.method</code>: PKCE configuration.</li>
+<li><code>backchannel.logout.url</code>: URL for backchannel logout.</li>
+<li><code>use.refresh.tokens</code>: Enable refresh tokens.</li>
+</ul>
+<hr />
+<h2 id="rolerepresentation-object">RoleRepresentation Object<a class="headerlink" href="#rolerepresentation-object" title="Permanent link">&para;</a></h2>
+<p>Used in client role management and scope mappings.</p>
+<ul>
+<li><code>id</code>: Internal UUID.</li>
+<li><code>name</code>: Role name.</li>
+<li><code>description</code>: Role description.</li>
+<li><code>composite</code>: Boolean, whether this is a composite role.</li>
+<li><code>clientRole</code>: Boolean, true for client roles.</li>
+<li><code>containerId</code>: Internal ID of the client or realm.</li>
+</ul>
+<hr />
+<h2 id="protocolmapperrepresentation-object">ProtocolMapperRepresentation Object<a class="headerlink" href="#protocolmapperrepresentation-object" title="Permanent link">&para;</a></h2>
+<p>Used to define token mapping logic.</p>
+<ul>
+<li><code>id</code>: Internal UUID.</li>
+<li><code>name</code>: Mapper name.</li>
+<li><code>protocol</code>: Usually "openid-connect".</li>
+<li><code>protocolMapper</code>: The type of mapper (e.g., "oidc-usermodel-property-mapper").</li>
+<li><code>consentRequired</code>: Boolean.</li>
+<li><code>config</code>: Map of configuration settings.</li>
+<li><code>user.attribute</code>: Property to map.</li>
+<li><code>claim.name</code>: Name in the token.</li>
+<li><code>jsonType.label</code>: Data type (String, JSON, etc.).</li>
+<li><code>id.token.claim</code>: Include in ID token.</li>
+<li><code>access.token.claim</code>: Include in Access token.</li>
+</ul>
+<hr />
+<h2 id="ai-usage-examples">AI Usage Examples<a class="headerlink" href="#ai-usage-examples" title="Permanent link">&para;</a></h2>
+<p>AI agents can use these tools to automate client management tasks.</p>
+<h3 id="finding-and-updating-a-client">Finding and Updating a Client<a class="headerlink" href="#finding-and-updating-a-client" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt:</strong> "Find the internal ID for the 'frontend-app' client in the 'production' realm and update its valid redirect URIs to include 'https://app.example.com/callback'."</p>
+<p><strong>Logical Steps:</strong>
+1. Call <code>client_list(realm="production", clientId="frontend-app")</code>.
+2. Extract the <code>id</code> from the result.
+3. Call <code>client_update(realm="production", id=uuid, client={"redirectUris": ["https://app.example.com/callback"]})</code>.</p>
+<h3 id="managing-client-secrets">Managing Client Secrets<a class="headerlink" href="#managing-client-secrets" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt:</strong> "The 'backend-service' client secret has been compromised. Regenerate it in the 'internal' realm and tell me the new secret."</p>
+<p><strong>Logical Steps:</strong>
+1. Call <code>client_list(realm="internal", clientId="backend-service")</code> to find the UUID.
+2. Call <code>client_secret_regenerate(realm="internal", id=uuid)</code>.
+3. Report the <code>value</code> from the response.</p>
+<h3 id="auditing-client-roles">Auditing Client Roles<a class="headerlink" href="#auditing-client-roles" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt:</strong> "List all roles for the 'reports-api' client in 'finance' realm and show me which users are assigned to the 'admin' role."</p>
+<p><strong>Logical Steps:</strong>
+1. Find UUID via <code>client_list</code>.
+2. Call <code>client_roles_list(realm="finance", id=uuid)</code>.
+3. Call <code>client_role_users_list(realm="finance", id=uuid, role_name="admin")</code>.</p>
+<h3 id="configuring-protocol-mappers">Configuring Protocol Mappers<a class="headerlink" href="#configuring-protocol-mappers" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt:</strong> "Add a hardcoded claim 'organization' with value 'engineering' to the ID token for the 'gateway' client in the 'master' realm."</p>
+<p><strong>Logical Steps:</strong>
+1. Find UUID via <code>client_list</code>.
+2. Call <code>client_protocol_mapper_create(realm="master", id=uuid, mapper={...})</code>.</p>
+<h3 id="bulk-client-operations">Bulk Client Operations<a class="headerlink" href="#bulk-client-operations" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt:</strong> "Disable all clients in the 'test' realm except for 'admin-cli' and 'account'."</p>
+<p><strong>Logical Steps:</strong>
+1. Call <code>client_list(realm="test")</code>.
+2. Iterate through clients.
+3. For each client not in the exclusion list, call <code>client_update(realm="test", id=id, client={"enabled": false})</code>.</p>
+<hr />
+<h2 id="implementation-details">Implementation Details<a class="headerlink" href="#implementation-details" title="Permanent link">&para;</a></h2>
+<h3 id="internal-ids-vs-client-ids">Internal IDs vs Client IDs<a class="headerlink" href="#internal-ids-vs-client-ids" title="Permanent link">&para;</a></h3>
+<p>Most API calls require the internal UUID (<code>id</code>). Always use <code>client_list</code> with a <code>clientId</code> filter to resolve the UUID before performing operations. The <code>clientId</code> is the one configured in the Keycloak UI and used by the application, whereas <code>id</code> is a database-level identifier.</p>
+<h3 id="pagination-and-search">Pagination and Search<a class="headerlink" href="#pagination-and-search" title="Permanent link">&para;</a></h3>
+<p>When using <code>client_list</code>, the results are paginated by default. If you have a large number of clients, use <code>first</code> and <code>max</code> to iterate through them. Generic search using the <code>search</code> parameter is helpful but may return multiple partial matches.</p>
+<h3 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>404 Not Found</strong>: The realm or the specific client ID does not exist.</li>
+<li><strong>403 Forbidden</strong>: The current user lacks administrative permissions for the client or realm.</li>
+<li><strong>409 Conflict</strong>: Attempting to create a client with a <code>clientId</code> that already exists.</li>
+<li><strong>400 Bad Request</strong>: Invalid <code>ClientRepresentation</code> or missing required fields.</li>
+</ul>
+<h3 id="keycloak-documentation">Keycloak Documentation<a class="headerlink" href="#keycloak-documentation" title="Permanent link">&para;</a></h3>
+<p>For detailed information on the properties within <code>ClientRepresentation</code>, <code>RoleRepresentation</code>, or <code>ProtocolMapperRepresentation</code>, refer to the official Keycloak Admin REST API documentation:</p>
+<p><a href="https://www.keycloak.org/docs-api/latest/rest-api/index.html">Keycloak Admin REST API Reference</a></p>
+<hr />
+<h2 id="summary-table-of-tool-groups">Summary Table of Tool Groups<a class="headerlink" href="#summary-table-of-tool-groups" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Primary Purpose</th>
+<th>Key Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core CRUD</td>
+<td>Create, Read, Update, Delete clients.</td>
+<td>Lifecycle management.</td>
+</tr>
+<tr>
+<td>Credentials</td>
+<td>Manage secrets and keys.</td>
+<td>Authentication configuration.</td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>Manage client-specific roles.</td>
+<td>Authorization definitions.</td>
+</tr>
+<tr>
+<td>Scope Mappings</td>
+<td>Control role propagation.</td>
+<td>Token contents control.</td>
+</tr>
+<tr>
+<td>Protocol Mappers</td>
+<td>Customizing token contents.</td>
+<td>Data transformation.</td>
+</tr>
+<tr>
+<td>Service Account</td>
+<td>Accessing client's internal user.</td>
+<td>Machine-to-machine identity.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="detailed-parameter-reference">Detailed Parameter Reference<a class="headerlink" href="#detailed-parameter-reference" title="Permanent link">&para;</a></h2>
+<h3 id="realm-wide-parameters">Realm-wide Parameters<a class="headerlink" href="#realm-wide-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>realm</code>: The name of the realm containing the client.</li>
+</ul>
+<h3 id="client-identifiers">Client Identifiers<a class="headerlink" href="#client-identifiers" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>id</code>: The internal UUID of the client. Essential for GET, UPDATE, DELETE, and sub-resource management.</li>
+<li><code>clientId</code>: The user-defined ID. Used for filtering in <code>client_list</code>.</li>
+</ul>
+<h3 id="pagination-parameters">Pagination Parameters<a class="headerlink" href="#pagination-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>first</code>: Start index for results.</li>
+<li><code>max</code>: Maximum number of results to return.</li>
+</ul>
+<h3 id="role-parameters">Role Parameters<a class="headerlink" href="#role-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>role_name</code>: The name of the role (e.g., "admin", "viewer").</li>
+<li><code>role</code>: A <code>RoleRepresentation</code> object.</li>
+</ul>
+<h3 id="protocol-mapper-parameters">Protocol Mapper Parameters<a class="headerlink" href="#protocol-mapper-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>mapper_id</code>: The internal UUID of the protocol mapper.</li>
+<li><code>mapper</code>: A <code>ProtocolMapperRepresentation</code> object.</li>
+</ul>
+<hr />
+<h2 id="advanced-scenarios">Advanced Scenarios<a class="headerlink" href="#advanced-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="client-scopes-vs-scope-mappings">Client Scopes vs Scope Mappings<a class="headerlink" href="#client-scopes-vs-scope-mappings" title="Permanent link">&para;</a></h3>
+<p>Note that "Client Scopes" (managed via the Client Scopes API) are reusable sets of mappers and roles. "Scope Mappings" within the Clients API refer to the "Scope" tab in the Keycloak UI for a specific client, defining which roles are allowed to be included in that client's token.</p>
+<h3 id="certificate-management">Certificate Management<a class="headerlink" href="#certificate-management" title="Permanent link">&para;</a></h3>
+<p>When using <code>client_certificate_generate</code>, the <code>attr</code> parameter refers to the prefix used in the client attributes (e.g., <code>jwt.credential</code>). This is used for signed JWT client authentication.</p>
+<h3 id="service-account-user">Service Account User<a class="headerlink" href="#service-account-user" title="Permanent link">&para;</a></h3>
+<p>The service account user is a standard Keycloak user but is linked to the client. You can use User API tools on the ID returned by <code>client_service_account_user_get</code> to manage its attributes, group memberships, or realm role mappings. This user typically has a username in the format <code>service-account-&lt;clientId&gt;</code>.</p>
+<h3 id="composite-roles-in-clients">Composite Roles in Clients<a class="headerlink" href="#composite-roles-in-clients" title="Permanent link">&para;</a></h3>
+<p>Client roles can be composites, meaning they include other roles. When managing these via <code>client_role_update</code>, ensure you understand the hierarchy to avoid circular references.</p>
+<hr />
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Always Fetch Latest Representation</strong>: Before calling <code>client_update</code>, call <code>client_get</code> to ensure you have the current state and avoid overwriting concurrent changes.</li>
+<li><strong>Minimize Redirect URIs</strong>: For security, keep the list of <code>redirectUris</code> as specific as possible. Avoid using wildcards (<code>*</code>) in production.</li>
+<li><strong>Use Confidential Clients for Servers</strong>: Always set <code>publicClient: false</code> for server-side applications and use the Credentials API to manage secrets.</li>
+<li><strong>Clean Up</strong>: Delete unused client roles or protocol mappers to keep the configuration maintainable and reduce token size.</li>
+<li><strong>Automation Audit</strong>: Regularly use <code>client_list</code> to audit which clients are enabled and if their configurations match security policies.</li>
+</ol>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="why-is-my-client-update-failing">Why is my client update failing?<a class="headerlink" href="#why-is-my-client-update-failing" title="Permanent link">&para;</a></h3>
+<p>Ensure you are not trying to change immutable fields like the internal <code>id</code>. Check that the <code>ClientRepresentation</code> you are sending is valid JSON. Keycloak is strict about the structure of the representation.</p>
+<h3 id="why-cant-i-find-my-client">Why can't I find my client?<a class="headerlink" href="#why-cant-i-find-my-client" title="Permanent link">&para;</a></h3>
+<p>Check if you are searching by <code>clientId</code> (the human name) but using a tool that expects the <code>id</code> (the UUID). Use <code>client_list</code> with <code>clientId</code> filter to resolve.</p>
+<h3 id="secret-regeneration">Secret Regeneration<a class="headerlink" href="#secret-regeneration" title="Permanent link">&para;</a></h3>
+<p>Regenerating a secret is instantaneous. Ensure any applications using the old secret are updated immediately to prevent service interruption. There is no "grace period" for the old secret.</p>
+<h3 id="scope-mapping-issues">Scope Mapping Issues<a class="headerlink" href="#scope-mapping-issues" title="Permanent link">&para;</a></h3>
+<p>If a role is assigned to a user but not appearing in the token, check the <code>client_scope_mappings</code>. The client must have the role in its scope (either directly or via "Full Scope Allowed").</p>
+<h3 id="protocol-mapper-not-working">Protocol Mapper Not Working<a class="headerlink" href="#protocol-mapper-not-working" title="Permanent link">&para;</a></h3>
+<p>Verify that the <code>protocol</code> is set to <code>openid-connect</code> and the <code>protocolMapper</code> type is correctly spelled. Check the <code>config</code> map for required fields like <code>claim.name</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

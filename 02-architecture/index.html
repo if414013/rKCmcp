@@ -1,0 +1,2113 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI-powered Keycloak administration through the Model Context Protocol">
+      
+      
+      
+        <link rel="canonical" href="https://if414013.github.io/rKCmcp/02-architecture/">
+      
+      
+        <link rel="prev" href="../01-overview/">
+      
+      
+        <link rel="next" href="../03-request-flow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Architecture - Keycloak MCP Server</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta name="google-site-verification" content="" />
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Keycloak MCP Server" class="md-header__button md-logo" aria-label="Keycloak MCP Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Keycloak MCP Server
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/if414013/rKCmcp" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    if414013/rKCmcp
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../01-overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../03-request-flow/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Request Flow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../04-components/keycloak-client/" class="md-tabs__link">
+          
+  
+  
+  Components
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../05-api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../06-configuration/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Configuration
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../07-extending/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Extending
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../08-troubleshooting/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Troubleshooting
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Keycloak MCP Server" class="md-nav__button md-logo" aria-label="Keycloak MCP Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Keycloak MCP Server
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/if414013/rKCmcp" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    if414013/rKCmcp
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layered-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layered Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layered Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-transport-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Transport Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-protocol-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Protocol Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-handler-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Handler Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-client-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Client Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-auth-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Auth Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#component-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component Relationships
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Component Relationships">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#component-roles-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component Roles in Detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow-and-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow and Interaction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Flow and Interaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequence-diagram-user-listing-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequence Diagram: User Listing Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-component-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Component Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tool-registration-and-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool Registration and Metadata
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tool Registration and Metadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macro-based-tool-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro-Based Tool Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-transport-for-oauth-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Transport for OAuth 2.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-delegation-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Delegation and Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asynchronous-runtime-and-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asynchronous Runtime and Concurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technology-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technology Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-management-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Management Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalability-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability and Performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Considerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-request-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Request Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-components/keycloak-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keycloak Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-components/mcp-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-components/oauth-auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAuth Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-components/tool-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/clients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/realms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/identity-providers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Identity Providers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-api-reference/client-scopes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Scopes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-extending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extending
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layered-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layered Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layered Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-transport-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Transport Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-protocol-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Protocol Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-handler-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Handler Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-client-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Client Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-auth-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Auth Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#component-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component Relationships
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Component Relationships">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#component-roles-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component Roles in Detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow-and-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow and Interaction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Flow and Interaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequence-diagram-user-listing-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequence Diagram: User Listing Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-component-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Component Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tool-registration-and-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool Registration and Metadata
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tool Registration and Metadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macro-based-tool-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro-Based Tool Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-transport-for-oauth-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Transport for OAuth 2.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-delegation-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Delegation and Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asynchronous-runtime-and-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asynchronous Runtime and Concurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technology-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technology Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-management-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Management Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalability-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability and Performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Considerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
+<p>This document describes the high-level architecture of the Keycloak Model Context Protocol (MCP) Server. It outlines how the system components interact, the layered design approach, and the key technology choices that drive the implementation.</p>
+<h2 id="system-overview">System Overview<a class="headerlink" href="#system-overview" title="Permanent link">&para;</a></h2>
+<p>The Keycloak MCP Server acts as a bridge between AI assistants (MCP Clients) and the Keycloak Identity and Access Management system. It enables AI models to perform administrative tasks, manage users, configure realms, and inspect security settings through a standardized protocol.</p>
+<h3 id="high-level-flow">High-Level Flow<a class="headerlink" href="#high-level-flow" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TB
+    subgraph "MCP Client"
+        AI[AI Assistant]
+    end
+    subgraph "Keycloak MCP Server"
+        Axum[Axum HTTP Server]
+        MCP[MCP Protocol Layer]
+        Tools[Tool Handler]
+        Client[Keycloak Client]
+    end
+    subgraph "Keycloak"
+        Admin[Admin REST API]
+        Auth[OAuth/OIDC]
+    end
+    AI --&gt;|MCP Request| Axum
+    Axum --&gt; MCP
+    MCP --&gt; Tools
+    Tools --&gt; Client
+    Client --&gt;|HTTP| Admin
+    Axum --&gt;|JWT Validation| Auth</code></pre>
+<p>The server exposes an HTTP endpoint that accepts MCP requests over a streamable transport. Each request is validated against Keycloak's own authentication mechanisms before being processed by the tool dispatcher. This ensures that the AI assistant operates within the security context of a valid Keycloak user or service account.</p>
+<h2 id="layered-architecture">Layered Architecture<a class="headerlink" href="#layered-architecture" title="Permanent link">&para;</a></h2>
+<p>The project follows a modular, layered architecture to ensure separation of concerns and maintainability. Each layer has a specific responsibility and communicates with adjacent layers through well-defined interfaces.</p>
+<h3 id="1-transport-layer">1. Transport Layer<a class="headerlink" href="#1-transport-layer" title="Permanent link">&para;</a></h3>
+<p>The outermost layer is built on the Axum framework. Unlike many MCP implementations that use stdio (standard input/output), this server utilizes HTTP to facilitate robust authentication and multi-user support.</p>
+<ul>
+<li><strong>Axum HTTP Server</strong>: Handles TCP connections, TLS (if configured), and HTTP routing. It provides the industrial-grade foundation needed for a production-ready server.</li>
+<li><strong>StreamableHttpService</strong>: A custom integration that manages the lifecycle of MCP sessions over HTTP. It handles the mapping of individual HTTP requests to long-lived MCP sessions, ensuring that stateful protocol operations (like session initialization) work correctly in a request-response environment.</li>
+<li><strong>JSON-RPC Over HTTP</strong>: Implements the transport-specific parts of the MCP specification. It translates the raw HTTP body into the JSON-RPC 2.0 format expected by the protocol layer.</li>
+<li><strong>Multiplexing</strong>: Support for handling multiple concurrent MCP sessions over the same HTTP listener, allowing different AI assistants or users to interact with the server simultaneously.</li>
+</ul>
+<h3 id="2-protocol-layer">2. Protocol Layer<a class="headerlink" href="#2-protocol-layer" title="Permanent link">&para;</a></h3>
+<p>The protocol logic is managed by the <code>rmcp</code> SDK. This layer implements the core Model Context Protocol specification.</p>
+<ul>
+<li><strong>Message Parsing</strong>: Deserializes JSON-RPC 2.0 messages into structured Rust types, handling all standard MCP methods such as <code>initialize</code>, <code>list_tools</code>, and <code>call_tool</code>.</li>
+<li><strong>Schema Validation</strong>: Ensures that incoming tool calls provide the correct arguments and that the server's responses match the advertised JSON schemas. This prevents invalid data from reaching the handler layer.</li>
+<li><strong>Session Management</strong>: Tracks active MCP sessions and their capabilities. It handles the initial handshake where the client and server agree on which features (tools, resources, prompts) are available.</li>
+<li><strong>Protocol Compliance</strong>: Guarantees that all communication adheres to the strict MCP standard, ensuring compatibility with any compliant MCP client.</li>
+</ul>
+<h3 id="3-handler-layer">3. Handler Layer<a class="headerlink" href="#3-handler-layer" title="Permanent link">&para;</a></h3>
+<p>The <code>KeycloakToolHandler</code> serves as the central orchestration point. It acts as the dispatcher for all Keycloak-specific operations.</p>
+<ul>
+<li><strong>ToolRouter</strong>: A sophisticated registry that maps incoming MCP tool names (e.g., <code>keycloak_list_users</code>) to specific handler functions. The router is optimized for fast lookups and efficient routing.</li>
+<li><strong>Argument Extraction</strong>: Unpacks tool arguments from the MCP payload and converts them into the internal types used by the client layer. It handles optional parameters, default values, and complex nested objects.</li>
+<li><strong>Error Handling &amp; Translation</strong>: Captures Keycloak API errors and translates them into meaningful MCP error codes. For example, a Keycloak 409 Conflict is translated into a descriptive MCP error that explains which resource already exists.</li>
+<li><strong>Result Formatting</strong>: Converts the raw data returned by the client layer into <code>McpContent</code> objects, which may include text, JSON, or even image references if applicable.</li>
+</ul>
+<h3 id="4-client-layer">4. Client Layer<a class="headerlink" href="#4-client-layer" title="Permanent link">&para;</a></h3>
+<p>The <code>KeycloakClient</code> is a specialized HTTP client built on the <code>reqwest</code> library. It encapsulates the low-level details of the Keycloak Admin REST API.</p>
+<ul>
+<li><strong>Base URL Management</strong>: Handles URL construction for different realms and resources, ensuring that calls are routed to the correct Keycloak endpoint (e.g., <code>/admin/realms/{realm}/users</code>).</li>
+<li><strong>Header Management</strong>: Automatically attaches authorization headers, sets correct content types (usually <code>application/json</code>), and manages user-agent strings for identifying the server.</li>
+<li><strong>Retry Logic &amp; Connection Pooling</strong>: Implements transient failure handling for network requests and maintains a pool of persistent connections to the Keycloak server to minimize latency and improve throughput.</li>
+<li><strong>Deserialization</strong>: Converts raw JSON responses from Keycloak into typed Rust structures using <code>serde</code>. It handles various response formats, including lists, single objects, and empty responses.</li>
+</ul>
+<h3 id="5-auth-layer">5. Auth Layer<a class="headerlink" href="#5-auth-layer" title="Permanent link">&para;</a></h3>
+<p>The authentication layer provides the security perimeter for the server, ensuring that only authorized entities can access the MCP tools.</p>
+<ul>
+<li><strong>JWT Middleware</strong>: Validates incoming Bearer tokens from the MCP Client. It checks for token expiration, issuer validity, and audience match against the configured Keycloak realm.</li>
+<li><strong>JWKS Integration</strong>: Periodically fetches and caches JSON Web Key Sets from Keycloak. This allows the server to verify token signatures locally using RSA or EC public keys, avoiding a high-latency round-trip to the auth server for every request.</li>
+<li><strong>Token Delegation</strong>: Ensures that the identity of the caller is preserved when interacting with the Admin API. This allows Keycloak's own RBAC (Role-Based Access Control) to be enforced at the source, providing deep security.</li>
+</ul>
+<h2 id="component-relationships">Component Relationships<a class="headerlink" href="#component-relationships" title="Permanent link">&para;</a></h2>
+<p>The following diagram illustrates the structural relationships between the core Rust components and how they implement the necessary traits.</p>
+<pre class="mermaid"><code>classDiagram
+    class KeycloakMcpServer {
+        +run()
+    }
+    class ServerHandler {
+        &lt;&lt;interface&gt;&gt;
+        +handle_request()
+    }
+    class KeycloakToolHandler {
+        -router: ToolRouter
+        +call_tool()
+    }
+    class KeycloakClient {
+        -http: Client
+        -base_url: String
+        +request()
+    }
+    class ToolRouter {
+        -tools: Map
+        +register()
+    }
+
+    KeycloakMcpServer ..|&gt; ServerHandler
+    KeycloakMcpServer --&gt; KeycloakToolHandler
+    KeycloakToolHandler --&gt; ToolRouter
+    KeycloakToolHandler --&gt; KeycloakClient</code></pre>
+<h3 id="component-roles-in-detail">Component Roles in Detail<a class="headerlink" href="#component-roles-in-detail" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>KeycloakMcpServer</strong>: This is the application container. It is responsible for reading configuration from the environment, initializing the logging system, and starting the Axum server. It acts as the glue between the HTTP transport and the MCP protocol logic.</li>
+<li><strong>ServerHandler</strong>: This trait is the primary interface for the MCP protocol. The server implementation handles the "wire" format and delegates the "intent" to the tool handler. It provides a clean separation between how messages are transported and how they are processed.</li>
+<li><strong>KeycloakToolHandler</strong>: This is the heart of the logic. It maintains the registry of over 150 administrative tools. It is designed to be highly extensible, allowing for easy addition of new Keycloak API endpoints.</li>
+<li><strong>KeycloakClient</strong>: A wrapper around the <code>reqwest::Client</code> that adds Keycloak-specific behaviors. It abstracts away the complexities of the Admin REST API's URL structure and error reporting.</li>
+</ul>
+<h2 id="data-flow-and-interaction">Data Flow and Interaction<a class="headerlink" href="#data-flow-and-interaction" title="Permanent link">&para;</a></h2>
+<p>When an AI assistant requests a tool execution, the following sequence occurs to ensure safety, correctness, and auditability.</p>
+<h3 id="sequence-diagram-user-listing-example">Sequence Diagram: User Listing Example<a class="headerlink" href="#sequence-diagram-user-listing-example" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant AI as MCP Client
+    participant S as Keycloak MCP Server
+    participant K as Keycloak API
+
+    AI-&gt;&gt;S: Call Tool (e.g., list_users)
+    Note over S: Extract JWT from Header
+    S-&gt;&gt;S: Validate JWT against JWKS
+    S-&gt;&gt;S: Route to list_users handler
+    S-&gt;&gt;K: GET /admin/realms/{realm}/users
+    Note over K: Check Admin Permissions
+    K--&gt;&gt;S: User JSON Data (200 OK)
+    S-&gt;&gt;S: Format User objects into MCP Text
+    S--&gt;&gt;AI: MCP Tool Response (JSON-RPC)</code></pre>
+<h3 id="internal-component-lifecycle">Internal Component Lifecycle<a class="headerlink" href="#internal-component-lifecycle" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    Start([Start]) --&gt; Init[Initialize Config &amp; Logger]
+    Init --&gt; ClientInit[Initialize KeycloakClient]
+    ClientInit --&gt; ToolReg[Register 150+ Tools via Macros]
+    ToolReg --&gt; ServerStart[Start Axum Server]
+    ServerStart --&gt; Listen{Listen for HTTP}
+    Listen --&gt;|Request| Auth[Auth Middleware]
+    Auth --&gt;|Valid| Dispatch[MCP Dispatcher]
+    Dispatch --&gt;|Tool Call| Exec[Execute Tool Logic]
+    Exec --&gt;|API Call| Keycloak[(Keycloak API)]
+    Keycloak --&gt;|Response| Exec
+    Exec --&gt;|Result| Listen
+    Auth --&gt;|Invalid| Reject[401 Unauthorized]
+    Reject --&gt; Listen</code></pre>
+<h2 id="tool-registration-and-metadata">Tool Registration and Metadata<a class="headerlink" href="#tool-registration-and-metadata" title="Permanent link">&para;</a></h2>
+<p>To manage the massive surface area of the Keycloak Admin API (150+ tools), the server employs a declarative macro system.</p>
+<h3 id="macro-based-tool-registration">Macro-Based Tool Registration<a class="headerlink" href="#macro-based-tool-registration" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Consistency</strong>: Every tool follows the same registration pattern, reducing the "cognitive load" for developers adding new features.</li>
+<li><strong>Auto-Discovery</strong>: Tools are registered at compile-time. When the client calls <code>list_tools</code>, the server automatically generates the correct JSON schemas from the Rust function signatures, including descriptions and required fields.</li>
+<li><strong>Type Safety</strong>: Macros ensure that the handler functions match the signatures expected by the dispatcher, catching parameter mismatches at compile time rather than runtime.</li>
+<li><strong>Metadata Generation</strong>: Each tool includes rich metadata that describes its purpose, allowing the AI to understand when and how to use it effectively.</li>
+</ul>
+<h2 id="key-design-decisions">Key Design Decisions<a class="headerlink" href="#key-design-decisions" title="Permanent link">&para;</a></h2>
+<h3 id="http-transport-for-oauth-21">HTTP Transport for OAuth 2.1<a class="headerlink" href="#http-transport-for-oauth-21" title="Permanent link">&para;</a></h3>
+<p>While the MCP specification supports stdio, we chose HTTP to align with Keycloak's web-native nature and enterprise requirements.
+- <strong>Centralized Auth</strong>: Using Keycloak to protect the MCP server itself. This means you can use the same identity system to manage the tools that manage the identity system.
+- <strong>Statelessness</strong>: The server doesn't need to track session state in local memory or a database; the JWT carries all necessary information for authorization and auditing.
+- <strong>Deployment Flexibility</strong>: The server can run in modern cloud environments like Kubernetes or Serverless containers and be accessed by remote AI agents across the internet or a private VPC.</p>
+<h3 id="token-delegation-and-security">Token Delegation and Security<a class="headerlink" href="#token-delegation-and-security" title="Permanent link">&para;</a></h3>
+<p>The server operates on the principle of "Least Privilege" and deep integration with Keycloak security.
+- <strong>No Master Credentials</strong>: The server does not store sensitive master admin passwords. It relies on the token provided by the caller or a specifically scoped service account.
+- <strong>RBAC Enforcement</strong>: If the user calling the MCP tool doesn't have "view-users" permissions in Keycloak, the API call will fail with a 403 Forbidden, and the AI will be informed of this restriction.
+- <strong>Auditing</strong>: Every action performed by the AI is recorded in Keycloak's own audit logs as being performed by the specific user who authorized the MCP session, ensuring clear accountability.</p>
+<h3 id="asynchronous-runtime-and-concurrency">Asynchronous Runtime and Concurrency<a class="headerlink" href="#asynchronous-runtime-and-concurrency" title="Permanent link">&para;</a></h3>
+<p>The entire stack is built on the <code>tokio</code> runtime to handle high-concurrency workloads.
+- <strong>High Throughput</strong>: The server can handle thousands of concurrent requests with minimal CPU and memory overhead, making it suitable for large-scale enterprise deployments.
+- <strong>Resource Efficiency</strong>: Non-blocking I/O ensures that threads aren't wasted waiting for network responses from Keycloak, allowing for efficient use of container resources.
+- <strong>Modern Ecosystem</strong>: Leveraging <code>tokio</code> gives the project access to the best-in-class libraries for HTTP (<code>axum</code>), JSON (<code>serde</code>), and logging (<code>tracing</code>).</p>
+<h2 id="technology-stack">Technology Stack<a class="headerlink" href="#technology-stack" title="Permanent link">&para;</a></h2>
+<p>The project uses a curated selection of high-quality Rust crates to ensure security, performance, and maintainability.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Tokio 1.x</td>
+<td>Async execution and task management. The industry standard for high-performance Rust.</td>
+</tr>
+<tr>
+<td>HTTP Server</td>
+<td>Axum 0.8</td>
+<td>Routing and request handling. Built on top of <code>tower</code> and <code>hyper</code> for maximum compatibility and extensibility.</td>
+</tr>
+<tr>
+<td>MCP SDK</td>
+<td>rmcp 0.8</td>
+<td>Protocol implementation. Handles the nuances of the Model Context Protocol, including session states.</td>
+</tr>
+<tr>
+<td>HTTP Client</td>
+<td>reqwest 0.12</td>
+<td>Communication with the Keycloak Admin API. Supports connection pooling, automatic compression, and async I/O.</td>
+</tr>
+<tr>
+<td>JWT</td>
+<td>jsonwebtoken</td>
+<td>Secure token validation. Handles RSA and EC signatures used by Keycloak for verifying client identity.</td>
+</tr>
+<tr>
+<td>Serialization</td>
+<td>Serde</td>
+<td>Data transformation. The backbone for both MCP protocol messages and Keycloak API entities.</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>Tracing</td>
+<td>Structured logging and diagnostic information for debugging, auditing, and performance monitoring.</td>
+</tr>
+<tr>
+<td>Environment</td>
+<td>Dotenvy</td>
+<td>Configuration management via environment variables, ensuring easy deployment in containerized environments.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-management-strategy">Error Management Strategy<a class="headerlink" href="#error-management-strategy" title="Permanent link">&para;</a></h2>
+<p>Errors are categorized and handled at each layer to provide the best possible feedback to both the AI and the system administrators:
+- <strong>Network Errors</strong>: Handled by <code>reqwest</code> and mapped to MCP internal errors with details about the connection failure (e.g., timeout, DNS failure).
+- <strong>Auth Errors</strong>: Handled by <code>axum</code> middleware and mapped to standard 401/403 HTTP codes, preventing unauthorized access before the protocol layer is reached.
+- <strong>Protocol Errors</strong>: Handled by <code>rmcp</code> and mapped to standard JSON-RPC codes (e.g., -32601 for Method Not Found or -32602 for Invalid Params).
+- <strong>Application Errors</strong>: Keycloak API errors (4xx/5xx) are parsed to extract the <code>errorMessage</code> field provided by Keycloak. This specific error message is passed back to the AI, allowing it to understand <em>why</em> a request failed (e.g., "Username already exists" or "Client ID mismatch").</p>
+<h2 id="scalability-and-performance">Scalability and Performance<a class="headerlink" href="#scalability-and-performance" title="Permanent link">&para;</a></h2>
+<p>The stateless nature of the architecture is its greatest strength for scalability and operational reliability.
+- <strong>Horizontal Scaling</strong>: Multiple instances of the Keycloak MCP Server can run behind a standard load balancer. Since there is no local state, any instance can handle any request from any client.
+- <strong>Caching</strong>: The server implements aggressive caching for semi-static data like JWKS and Realm configurations to reduce the load on the Keycloak instance and improve response times for frequently used tools.
+- <strong>Connection Management</strong>: Persistent connections to Keycloak are maintained via <code>reqwest</code>'s internal pool, significantly reducing the overhead of TLS handshakes for repeated tool calls and improving overall system latency.</p>
+<h2 id="future-considerations">Future Considerations<a class="headerlink" href="#future-considerations" title="Permanent link">&para;</a></h2>
+<p>The architecture is designed to support future enhancements as the MCP specification and Keycloak continue to evolve:
+- <strong>SSE Support</strong>: While currently using standard HTTP POST, the architecture can easily transition to Server-Sent Events (SSE) for streaming long-running responses or real-time event notifications.
+- <strong>Custom Tool Extensions</strong>: The <code>ToolRouter</code> is designed to allow developers to add custom, non-Keycloak tools without modifying the core protocol logic, enabling specialized extensions.
+- <strong>Enhanced Observability</strong>: Future integration with OpenTelemetry will provide distributed tracing across the entire AI -&gt; MCP -&gt; Keycloak path, giving developers deep insights into performance and error rates.
+- <strong>Schema Evolution</strong>: The use of <code>serde</code> and a flexible tool registration system ensures that the server can gracefully handle future updates to the Keycloak Admin API and the MCP specification.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

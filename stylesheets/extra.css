@@ -1,0 +1,120 @@
+/* Hero section styling */
+.md-typeset .hero {
+  text-align: center;
+  padding: 2rem 1rem 3rem;
+  margin: 0 -0.8rem 2rem;
+  background: linear-gradient(135deg, #303f9f 0%, #1a237e 50%, #283593 100%);
+  border-radius: 0.4rem;
+  color: #fff;
+}
+
+.md-typeset .hero h1 {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.md-typeset .hero p {
+  color: rgba(255, 255, 255, 0.87);
+  font-size: 1.15rem;
+  max-width: 40rem;
+  margin: 0.5rem auto;
+}
+
+.md-typeset .hero .hero-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.md-typeset .hero .md-button {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.md-typeset .hero .md-button--primary {
+  background-color: #ff8f00;
+  border-color: #ff8f00;
+  color: #fff;
+}
+
+.md-typeset .hero .md-button--primary:hover {
+  background-color: #ffa000;
+  border-color: #ffa000;
+}
+
+/* Feature grid */
+.md-typeset .feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.md-typeset .feature-card {
+  padding: 1.25rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  background: var(--md-default-bg-color);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.md-typeset .feature-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.md-typeset .feature-card h3 {
+  margin-top: 0;
+  font-size: 0.95rem;
+}
+
+.md-typeset .feature-card p {
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  margin-bottom: 0;
+}
+
+/* Code block enhancements */
+.md-typeset pre > code {
+  font-size: 0.82rem;
+}
+
+.md-typeset code {
+  font-size: 0.85em;
+}
+
+/* Responsive table improvements */
+.md-typeset table:not([class]) {
+  font-size: 0.82rem;
+  display: table;
+}
+
+.md-typeset table:not([class]) th {
+  white-space: nowrap;
+  min-width: 6rem;
+}
+
+/* Mermaid diagram spacing */
+.md-typeset .mermaid {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 600px) {
+  .md-typeset .hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .md-typeset .hero p {
+    font-size: 1rem;
+  }
+
+  .md-typeset .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
