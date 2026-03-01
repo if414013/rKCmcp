@@ -4,12 +4,9 @@
 
 use std::env;
 
-/// Configuration error type
 #[derive(Debug, Clone)]
 pub enum ConfigError {
-    /// Missing required configuration
     MissingRequired(String),
-    /// Invalid configuration value
     InvalidValue(String),
 }
 
@@ -26,46 +23,24 @@ impl std::fmt::Display for ConfigError {
 
 impl std::error::Error for ConfigError {}
 
-/// Server configuration loaded from environment variables.
 #[derive(Debug, Clone)]
 pub struct Config {
-    /// Keycloak server base URL
     pub keycloak_url: String,
-    /// Keycloak realm name
     pub keycloak_realm: String,
-    /// MCP server port
     pub mcp_port: u16,
-    /// Logging level (trace, debug, info, warn, error)
     pub log_level: String,
-    /// JWKS cache TTL in seconds
     pub jwks_cache_ttl: u64,
+    pub milvus_host: String,
+    pub milvus_port: u16,
+    pub milvus_collection_docs: String,
+    pub milvus_collection_code: String,
+    pub embedding_model: String,
+    pub embedding_dimension: u32,
+    pub openai_api_key: Option<String>,
 }
 
 impl Config {
-    /// Load configuration from environment variables with validation.
-    ///
-    /// # Environment Variables
-    /// - `KEYCLOAK_URL` - Keycloak server URL (required)
-    /// - `KEYCLOAK_REALM` - Keycloak realm name (default: "master")
-    /// - `MCP_PORT` - Server port (default: 3000)
-    /// - `LOG_LEVEL` - Logging level (default: "info")
-    /// - `JWKS_CACHE_TTL` - JWKS cache TTL in seconds (default: 3600)
-    ///
-    /// # Errors
-    /// Returns `ConfigError` if:
-    /// - `KEYCLOAK_URL` is not provided
-    /// - `MCP_PORT` is set but cannot be parsed as a valid port number
-    /// - `JWKS_CACHE_TTL` is set but cannot be parsed as a valid number
-    ///
-    /// # Example
-    /// ```no_run
-    /// use keycloak_mcp_server::config::Config;
-    ///
-    /// let config = Config::from_env().expect("Failed to load configuration");
-    /// println!("Server will bind to: {}", config.bind_address());
-    /// ```
     pub fn from_env() -> Result<Self, ConfigError> {
-        // KEYCLOAK_URL is required
         let keycloak_url = env::var("KEYCLOAK_URL").map_err(|_| {
             ConfigError::MissingRequired(
                 "KEYCLOAK_URL is required. Please set it to your Keycloak server URL (e.g., http://localhost:8080)"
@@ -73,10 +48,8 @@ impl Config {
             )
         })?;
 
-        // KEYCLOAK_REALM with default
         let keycloak_realm = env::var("KEYCLOAK_REALM").unwrap_or_else(|_| "master".to_string());
 
-        // MCP_PORT with default
         let mcp_port = match env::var("MCP_PORT") {
             Ok(port_str) => port_str.parse().map_err(|_| {
                 ConfigError::InvalidValue(
@@ -86,10 +59,8 @@ impl Config {
             Err(_) => 3000,
         };
 
-        // LOG_LEVEL with default
         let log_level = env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
 
-        // JWKS_CACHE_TTL with default
         let jwks_cache_ttl = match env::var("JWKS_CACHE_TTL") {
             Ok(ttl_str) => ttl_str.parse().map_err(|_| {
                 ConfigError::InvalidValue(
@@ -99,18 +70,51 @@ impl Config {
             Err(_) => 3600,
         };
 
+        let milvus_host = env::var("MILVUS_HOST").unwrap_or_else(|_| "localhost".to_string());
+
+        let milvus_port = match env::var("MILVUS_PORT") {
+            Ok(port_str) => port_str.parse().map_err(|_| {
+                ConfigError::InvalidValue("MILVUS_PORT must be a valid port number".to_string())
+            })?,
+            Err(_) => 19530,
+        };
+
+        let milvus_collection_docs =
+            env::var("MILVUS_COLLECTION_DOCS").unwrap_or_else(|_| "keycloak_docs".to_string());
+
+        let milvus_collection_code =
+            env::var("MILVUS_COLLECTION_CODE").unwrap_or_else(|_| "keycloak_code".to_string());
+
+        let embedding_model =
+            env::var("EMBEDDING_MODEL").unwrap_or_else(|_| "all-MiniLM-L6-v2".to_string());
+
+        let embedding_dimension = match env::var("EMBEDDING_DIMENSION") {
+            Ok(dim_str) => dim_str.parse().map_err(|_| {
+                ConfigError::InvalidValue("EMBEDDING_DIMENSION must be a valid number".to_string())
+            })?,
+            Err(_) => 384,
+        };
+
+        let openai_api_key = env::var("OPENAI_API_KEY").ok();
+
         let config = Self {
             keycloak_url,
             keycloak_realm,
             mcp_port,
             log_level,
             jwks_cache_ttl,
+            milvus_host,
+            milvus_port,
+            milvus_collection_docs,
+            milvus_collection_code,
+            embedding_model,
+            embedding_dimension,
+            openai_api_key,
         };
 
         Ok(config)
     }
 
-    /// Get the socket address for the MCP server.
     pub fn bind_address(&self) -> String {
         format!("0.0.0.0:{}", self.mcp_port)
     }
@@ -124,6 +128,13 @@ impl Default for Config {
             mcp_port: 3000,
             log_level: "info".to_string(),
             jwks_cache_ttl: 3600,
+            milvus_host: "localhost".to_string(),
+            milvus_port: 19530,
+            milvus_collection_docs: "keycloak_docs".to_string(),
+            milvus_collection_code: "keycloak_code".to_string(),
+            embedding_model: "all-MiniLM-L6-v2".to_string(),
+            embedding_dimension: 384,
+            openai_api_key: None,
         }
     }
 }
@@ -141,16 +152,16 @@ mod tests {
         assert_eq!(config.mcp_port, 3000);
         assert_eq!(config.log_level, "info");
         assert_eq!(config.jwks_cache_ttl, 3600);
+        assert_eq!(config.milvus_host, "localhost");
+        assert_eq!(config.milvus_port, 19530);
+        assert_eq!(config.embedding_dimension, 384);
     }
 
     #[test]
     fn test_bind_address() {
         let config = Config {
-            keycloak_url: "http://localhost:8080".to_string(),
-            keycloak_realm: "master".to_string(),
             mcp_port: 4000,
-            log_level: "debug".to_string(),
-            jwks_cache_ttl: 3600,
+            ..Config::default()
         };
         assert_eq!(config.bind_address(), "0.0.0.0:4000");
     }
