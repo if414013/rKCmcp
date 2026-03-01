@@ -2,7 +2,8 @@
 """
 Keycloak Documentation Indexer
 
-Scrapes Keycloak documentation and indexes it into Milvus for semantic search.
+Crawls and indexes Keycloak documentation into Milvus for semantic search.
+Performs full site crawling to discover all documentation pages.
 """
 
 import os
@@ -10,9 +11,11 @@ import sys
 import json
 import hashlib
 import re
-from dataclasses import dataclass, field, asdict
-from typing import List, Optional
-from urllib.parse import urljoin
+import time
+from collections import deque
+from dataclasses import dataclass
+from typing import List, Optional, Set
+from urllib.parse import urljoin, urlparse, urldefrag
 
 import requests
 from bs4 import BeautifulSoup
@@ -41,6 +44,116 @@ class DocumentChunk:
     section_path: List[str]
     heading: str
     heading_level: int
+
+
+class DocumentationCrawler:
+    def __init__(self, seed_urls: List[str], max_pages: int = 500, delay: float = 0.5):
+        self.seed_urls = seed_urls
+        self.max_pages = max_pages
+        self.delay = delay
+        self.visited: Set[str] = set()
+        self.session = requests.Session()
+        self.session.headers.update(
+            {"User-Agent": "KeycloakMCP-Indexer/1.0 (Documentation Crawler)"}
+        )
+
+    def normalize_url(self, url: str) -> str:
+        url, _ = urldefrag(url)
+        parsed = urlparse(url)
+        path = parsed.path.rstrip("/")
+        if not path.endswith(".html") and not path.endswith("/"):
+            if "." not in path.split("/")[-1]:
+                path = path + "/index.html"
+        return f"{parsed.scheme}://{parsed.netloc}{path}"
+
+    def is_valid_doc_url(self, url: str, base_url: str) -> bool:
+        parsed = urlparse(url)
+        base_parsed = urlparse(base_url)
+
+        if parsed.netloc != base_parsed.netloc:
+            return False
+
+        if not parsed.path.startswith("/docs/"):
+            return False
+
+        if any(
+            ext in parsed.path
+            for ext in [
+                ".css",
+                ".js",
+                ".png",
+                ".jpg",
+                ".gif",
+                ".svg",
+                ".ico",
+                ".pdf",
+                ".zip",
+            ]
+        ):
+            return False
+
+        return True
+
+    def extract_links(self, soup: BeautifulSoup, current_url: str) -> List[str]:
+        links = []
+        for a_tag in soup.find_all("a", href=True):
+            href = a_tag["href"]
+
+            if (
+                href.startswith("#")
+                or href.startswith("mailto:")
+                or href.startswith("javascript:")
+            ):
+                continue
+
+            absolute_url = urljoin(current_url, href)
+            normalized = self.normalize_url(absolute_url)
+
+            if self.is_valid_doc_url(normalized, current_url):
+                links.append(normalized)
+
+        return links
+
+    def crawl(self) -> List[str]:
+        queue = deque()
+        discovered_urls = []
+
+        for seed_url in self.seed_urls:
+            normalized = self.normalize_url(seed_url)
+            if normalized not in self.visited:
+                queue.append(normalized)
+                self.visited.add(normalized)
+
+        print(f"Starting crawl with {len(queue)} seed URLs...")
+        print(f"Max pages: {self.max_pages}")
+
+        while queue and len(discovered_urls) < self.max_pages:
+            url = queue.popleft()
+
+            try:
+                print(f"  Crawling: {url}")
+                resp = self.session.get(url, timeout=30)
+                resp.raise_for_status()
+
+                discovered_urls.append(url)
+
+                soup = BeautifulSoup(resp.text, "html.parser")
+                new_links = self.extract_links(soup, url)
+
+                for link in new_links:
+                    if link not in self.visited:
+                        self.visited.add(link)
+                        queue.append(link)
+
+                if self.delay > 0:
+                    time.sleep(self.delay)
+
+            except Exception as e:
+                print(f"    Error crawling {url}: {e}")
+                continue
+
+        print(f"Crawl complete. Discovered {len(discovered_urls)} pages.")
+        return discovered_urls
 
 
 class MilvusClient:
@@ -131,10 +244,13 @@ def extract_doc_type(url: str) -> str:
     return "unknown"
 
 
-def scrape_documentation(url: str) -> List[DocumentChunk]:
-    print(f"Scraping: {url}")
-    resp = requests.get(url, timeout=60)
-    resp.raise_for_status()
+def scrape_page(url: str, session: requests.Session) -> List[DocumentChunk]:
+    try:
+        resp = session.get(url, timeout=60)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"    Error fetching {url}: {e}")
+        return []
 
     soup = BeautifulSoup(resp.text, "html.parser")
     doc_type = extract_doc_type(url)
@@ -193,31 +309,6 @@ def scrape_documentation(url: str) -> List[DocumentChunk]:
         )
         chunks.append(chunk)
 
-    print(f"  Extracted {len(chunks)} sections")
-    return chunks
-
-
-def chunk_text(text: str, chunk_size: int = 512, overlap: int = 50) -> List[str]:
-    if len(text) <= chunk_size:
-        return [text]
-
-    chunks = []
-    start = 0
-    while start < len(text):
-        end = start + chunk_size
-        chunk = text[start:end]
-
-        if end < len(text):
-            last_period = chunk.rfind(". ")
-            last_newline = chunk.rfind("\n")
-            break_point = max(last_period, last_newline)
-            if break_point > chunk_size // 2:
-                chunk = chunk[: break_point + 1]
-                end = start + break_point + 1
-
-        chunks.append(chunk.strip())
-        start = end - overlap
-
     return chunks
 
 
@@ -228,6 +319,8 @@ def main():
     embedding_model = os.environ.get("EMBEDDING_MODEL", "text-embedding-3-small")
     embedding_dimension = int(os.environ.get("EMBEDDING_DIMENSION", "384"))
     openai_api_key = os.environ.get("OPENAI_API_KEY")
+    max_pages = int(os.environ.get("MAX_CRAWL_PAGES", "500"))
+    crawl_delay = float(os.environ.get("CRAWL_DELAY", "0.3"))
 
     docs_urls_env = os.environ.get("KEYCLOAK_DOCS_URLS")
     if docs_urls_env:
@@ -236,38 +329,71 @@ def main():
         docs_urls = KEYCLOAK_DOCS_URLS
 
     print("=" * 60)
-    print("Keycloak Documentation Indexer")
+    print("Keycloak Documentation Indexer (Full Crawler)")
     print("=" * 60)
     print(f"Milvus: {milvus_host}:{milvus_port}")
     print(f"Collection: {collection_name}")
     print(f"Embedding Model: {embedding_model}")
     print(f"Dimension: {embedding_dimension}")
-    print(f"URLs to index: {len(docs_urls)}")
+    print(f"Seed URLs: {len(docs_urls)}")
+    print(f"Max Pages: {max_pages}")
+    print(f"Crawl Delay: {crawl_delay}s")
     print("=" * 60)
+
+    crawler = DocumentationCrawler(docs_urls, max_pages=max_pages, delay=crawl_delay)
+    discovered_urls = crawler.crawl()
+
+    if not discovered_urls:
+        print("No pages discovered. Exiting.")
+        return
 
     milvus = MilvusClient(milvus_host, milvus_port)
     embeddings = EmbeddingService(embedding_model, embedding_dimension, openai_api_key)
 
     milvus.create_collection(collection_name, embedding_dimension)
 
-    all_chunks = []
-    for url in docs_urls:
-        try:
-            chunks = scrape_documentation(url)
-            all_chunks.extend(chunks)
-        except Exception as e:
-            print(f"  Error scraping {url}: {e}")
+    print("\n" + "=" * 60)
+    print("Extracting content from discovered pages...")
+    print("=" * 60)
 
-    print(f"\nTotal chunks to index: {len(all_chunks)}")
+    session = requests.Session()
+    session.headers.update(
+        {"User-Agent": "KeycloakMCP-Indexer/1.0 (Documentation Crawler)"}
+    )
+
+    all_chunks = []
+    for i, url in enumerate(discovered_urls):
+        print(f"[{i + 1}/{len(discovered_urls)}] Processing: {url}")
+        chunks = scrape_page(url, session)
+        all_chunks.extend(chunks)
+        print(f"    Extracted {len(chunks)} sections")
+
+    unique_chunks = {}
+    for chunk in all_chunks:
+        if chunk.id not in unique_chunks:
+            unique_chunks[chunk.id] = chunk
+    all_chunks = list(unique_chunks.values())
+
+    print(f"\nTotal unique chunks to index: {len(all_chunks)}")
+
+    if not all_chunks:
+        print("No content extracted. Exiting.")
+        return
 
     batch_size = 50
     total_indexed = 0
+
+    print("\n" + "=" * 60)
+    print("Indexing into Milvus...")
+    print("=" * 60)
 
     for i in range(0, len(all_chunks), batch_size):
         batch = all_chunks[i : i + batch_size]
         texts = [c.text for c in batch]
 
-        print(f"Embedding batch {i // batch_size + 1}...")
+        print(
+            f"Embedding batch {i // batch_size + 1}/{(len(all_chunks) + batch_size - 1) // batch_size}..."
+        )
         vectors = embeddings.embed(texts)
 
         data = []
@@ -289,8 +415,10 @@ def main():
         total_indexed += count
         print(f"  Indexed {count} chunks")
 
-    print("=" * 60)
-    print(f"Indexing complete! Total indexed: {total_indexed}")
+    print("\n" + "=" * 60)
+    print(f"INDEXING COMPLETE!")
+    print(f"  Pages crawled: {len(discovered_urls)}")
+    print(f"  Chunks indexed: {total_indexed}")
     print("=" * 60)
 
 
