@@ -1,0 +1,785 @@
+{
+  "id": "mcp-test",
+  "realm": "mcp-test",
+  "displayName": "MCP Test Realm",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "failureFactor": 5,
+  "eventsEnabled": true,
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
+  "internationalizationEnabled": true,
+  "supportedLocales": [
+    "en",
+    "de",
+    "es",
+    "fr",
+    "ja"
+  ],
+  "defaultLocale": "en",
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator role with full access",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "manager",
+        "description": "Manager role with limited admin access",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "user",
+        "description": "Standard user role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "viewer",
+        "description": "Read-only access role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "api-access",
+        "description": "Role for API access",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mcp-test"
+      },
+      {
+        "name": "premium-user",
+        "composite": true,
+        "clientRole": false,
+        "containerId": "mcp-test",
+        "composites": {
+          "realm": [
+            "user",
+            "api-access"
+          ]
+        }
+      }
+    ],
+    "client": {
+      "mcp-test-app": [
+        {
+          "name": "app-admin",
+          "clientRole": true,
+          "containerId": "mcp-test-app"
+        },
+        {
+          "name": "app-user",
+          "clientRole": true,
+          "containerId": "mcp-test-app"
+        },
+        {
+          "name": "app-viewer",
+          "clientRole": true,
+          "containerId": "mcp-test-app"
+        }
+      ],
+      "mcp-api-service": [
+        {
+          "name": "service-read",
+          "clientRole": true,
+          "containerId": "mcp-api-service"
+        },
+        {
+          "name": "service-write",
+          "clientRole": true,
+          "containerId": "mcp-api-service"
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "name": "Engineering",
+      "path": "/Engineering",
+      "subGroups": [
+        {
+          "name": "Backend",
+          "path": "/Engineering/Backend"
+        },
+        {
+          "name": "Frontend",
+          "path": "/Engineering/Frontend"
+        },
+        {
+          "name": "DevOps",
+          "path": "/Engineering/DevOps"
+        }
+      ]
+    },
+    {
+      "name": "Sales",
+      "path": "/Sales",
+      "subGroups": [
+        {
+          "name": "APAC",
+          "path": "/Sales/APAC"
+        },
+        {
+          "name": "EMEA",
+          "path": "/Sales/EMEA"
+        },
+        {
+          "name": "Americas",
+          "path": "/Sales/Americas"
+        }
+      ]
+    },
+    {
+      "name": "Management",
+      "path": "/Management"
+    },
+    {
+      "name": "External",
+      "path": "/External",
+      "subGroups": [
+        {
+          "name": "Partners",
+          "path": "/External/Partners"
+        },
+        {
+          "name": "Contractors",
+          "path": "/External/Contractors"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin-user",
+      "email": "admin@mcp-test.local",
+      "firstName": "Admin",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "manager",
+        "user"
+      ],
+      "groups": [
+        "/Engineering/Backend"
+      ]
+    },
+    {
+      "username": "john.doe",
+      "email": "john.doe@mcp-test.local",
+      "firstName": "John",
+      "lastName": "Doe",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "api-access"
+      ],
+      "groups": [
+        "/Engineering/Frontend"
+      ],
+      "attributes": {
+        "department": [
+          "Engineering"
+        ],
+        "employee_id": [
+          "EMP001"
+        ]
+      }
+    },
+    {
+      "username": "jane.smith",
+      "email": "jane.smith@mcp-test.local",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "manager",
+        "user"
+      ],
+      "groups": [
+        "/Management"
+      ],
+      "attributes": {
+        "department": [
+          "Management"
+        ],
+        "employee_id": [
+          "EMP002"
+        ]
+      }
+    },
+    {
+      "username": "bob.wilson",
+      "email": "bob.wilson@mcp-test.local",
+      "firstName": "Bob",
+      "lastName": "Wilson",
+      "enabled": true,
+      "emailVerified": false,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user"
+      ],
+      "groups": [
+        "/Sales/APAC"
+      ],
+      "attributes": {
+        "department": [
+          "Sales"
+        ],
+        "employee_id": [
+          "EMP003"
+        ]
+      }
+    },
+    {
+      "username": "alice.johnson",
+      "email": "alice.johnson@mcp-test.local",
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "premium-user"
+      ],
+      "groups": [
+        "/Engineering/DevOps"
+      ],
+      "attributes": {
+        "department": [
+          "Engineering"
+        ],
+        "employee_id": [
+          "EMP004"
+        ]
+      }
+    },
+    {
+      "username": "charlie.brown",
+      "email": "charlie.brown@mcp-test.local",
+      "firstName": "Charlie",
+      "lastName": "Brown",
+      "enabled": false,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "viewer"
+      ],
+      "groups": [
+        "/External/Contractors"
+      ]
+    },
+    {
+      "username": "diana.prince",
+      "email": "diana.prince@mcp-test.local",
+      "firstName": "Diana",
+      "lastName": "Prince",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "api-access"
+      ],
+      "groups": [
+        "/Sales/EMEA"
+      ],
+      "federatedIdentities": [
+        {
+          "identityProvider": "github-mock",
+          "userId": "diana-github-123",
+          "userName": "diana.prince"
+        }
+      ]
+    },
+    {
+      "username": "test-user",
+      "email": "test@mcp-test.local",
+      "firstName": "Test",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "test123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "mcp-test-app",
+      "name": "MCP Test Application",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "mcp-test-app-secret",
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": true,
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost:8080/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://localhost:8080"
+      ],
+      "protocol": "openid-connect",
+      "authorizationSettings": {
+        "allowRemoteResourceManagement": true,
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [
+          {
+            "name": "Users Resource",
+            "type": "urn:mcp-test-app:resources:users",
+            "uris": [
+              "/api/users/*"
+            ],
+            "scopes": [
+              {
+                "name": "read"
+              },
+              {
+                "name": "write"
+              },
+              {
+                "name": "delete"
+              }
+            ]
+          },
+          {
+            "name": "Reports Resource",
+            "type": "urn:mcp-test-app:resources:reports",
+            "uris": [
+              "/api/reports/*"
+            ],
+            "scopes": [
+              {
+                "name": "read"
+              },
+              {
+                "name": "generate"
+              }
+            ]
+          },
+          {
+            "name": "Settings Resource",
+            "type": "urn:mcp-test-app:resources:settings",
+            "uris": [
+              "/api/settings/*"
+            ],
+            "scopes": [
+              {
+                "name": "read"
+              },
+              {
+                "name": "write"
+              }
+            ]
+          },
+          {
+            "name": "Admin Resource",
+            "type": "urn:mcp-test-app:resources:admin",
+            "uris": [
+              "/api/admin/*"
+            ],
+            "scopes": [
+              {
+                "name": "read"
+              },
+              {
+                "name": "write"
+              },
+              {
+                "name": "delete"
+              }
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "name": "Admin Policy",
+            "type": "role",
+            "logic": "POSITIVE",
+            "config": {
+              "roles": "[{\"id\":\"admin\",\"required\":true}]"
+            }
+          },
+          {
+            "name": "Manager Policy",
+            "type": "role",
+            "logic": "POSITIVE",
+            "config": {
+              "roles": "[{\"id\":\"manager\",\"required\":true}]"
+            }
+          },
+          {
+            "name": "User Policy",
+            "type": "role",
+            "logic": "POSITIVE",
+            "config": {
+              "roles": "[{\"id\":\"user\",\"required\":true}]"
+            }
+          },
+          {
+            "name": "API Access Policy",
+            "type": "role",
+            "logic": "POSITIVE",
+            "config": {
+              "roles": "[{\"id\":\"api-access\",\"required\":true}]"
+            }
+          }
+        ],
+        "scopes": [
+          {
+            "name": "read"
+          },
+          {
+            "name": "write"
+          },
+          {
+            "name": "delete"
+          },
+          {
+            "name": "generate"
+          }
+        ]
+      }
+    },
+    {
+      "clientId": "mcp-public-app",
+      "name": "MCP Public Application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "redirectUris": [
+        "http://localhost:4200/*",
+        "http://localhost:5173/*"
+      ],
+      "webOrigins": [
+        "http://localhost:4200",
+        "http://localhost:5173"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    },
+    {
+      "clientId": "mcp-api-service",
+      "name": "MCP API Service",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "mcp-api-service-secret",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "serviceAccountsEnabled": true
+    },
+    {
+      "clientId": "mcp-mobile-app",
+      "name": "MCP Mobile Application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "redirectUris": [
+        "com.mcp.mobile:/oauth2redirect",
+        "myapp://callback"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    },
+    {
+      "clientId": "mcp-legacy-app",
+      "name": "MCP Legacy Application",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "mcp-legacy-secret",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "mcp-api",
+      "description": "MCP API access scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "mcp-api-service",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "department",
+      "description": "User department information",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "department-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "department",
+            "claim.name": "department",
+            "access.token.claim": "true",
+            "id.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "employee-info",
+      "description": "Employee information scope",
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "employee-id-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "employee_id",
+            "claim.name": "employee_id",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "location-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "location",
+            "claim.name": "location",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "identityProviders": [
+    {
+      "alias": "github-mock",
+      "displayName": "GitHub (Mock)",
+      "providerId": "github",
+      "enabled": false,
+      "trustEmail": true,
+      "config": {
+        "clientId": "mock-github-client-id",
+        "clientSecret": "mock-github-client-secret"
+      }
+    },
+    {
+      "alias": "google-mock",
+      "displayName": "Google (Mock)",
+      "providerId": "google",
+      "enabled": false,
+      "trustEmail": true,
+      "config": {
+        "clientId": "mock-google-client-id",
+        "clientSecret": "mock-google-client-secret"
+      }
+    }
+  ],
+  "identityProviderMappers": [
+    {
+      "name": "github-role-mapper",
+      "identityProviderAlias": "github-mock",
+      "identityProviderMapper": "hardcoded-role-idp-mapper",
+      "config": {
+        "role": "user"
+      }
+    },
+    {
+      "name": "github-username-mapper",
+      "identityProviderAlias": "github-mock",
+      "identityProviderMapper": "github-user-attribute-mapper",
+      "config": {
+        "jsonField": "login",
+        "userAttribute": "github_username"
+      }
+    },
+    {
+      "name": "google-email-mapper",
+      "identityProviderAlias": "google-mock",
+      "identityProviderMapper": "hardcoded-attribute-idp-mapper",
+      "config": {
+        "attribute": "email_verified",
+        "attribute.value": "true"
+      }
+    }
+  ],
+  "authenticationFlows": [
+    {
+      "alias": "MCP Custom Browser Flow",
+      "description": "Custom browser flow for MCP testing",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "requirement": "ALTERNATIVE",
+          "priority": 10
+        },
+        {
+          "authenticator": "identity-provider-redirector",
+          "requirement": "ALTERNATIVE",
+          "priority": 20
+        },
+        {
+          "authenticatorFlow": true,
+          "flowAlias": "MCP Forms",
+          "requirement": "ALTERNATIVE",
+          "priority": 30
+        }
+      ]
+    },
+    {
+      "alias": "MCP Forms",
+      "description": "Username/password form subflow",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-username-password-form",
+          "requirement": "REQUIRED",
+          "priority": 10
+        }
+      ]
+    },
+    {
+      "alias": "MCP Direct Grant Flow",
+      "description": "Custom direct grant flow for MCP testing",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "direct-grant-validate-username",
+          "requirement": "REQUIRED",
+          "priority": 10
+        },
+        {
+          "authenticator": "direct-grant-validate-password",
+          "requirement": "REQUIRED",
+          "priority": 20
+        }
+      ]
+    }
+  ],
+  "requiredActions": [
+    {
+      "alias": "CONFIGURE_TOTP",
+      "name": "Configure OTP",
+      "providerId": "CONFIGURE_TOTP",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 10
+    },
+    {
+      "alias": "UPDATE_PASSWORD",
+      "name": "Update Password",
+      "providerId": "UPDATE_PASSWORD",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 30
+    },
+    {
+      "alias": "UPDATE_PROFILE",
+      "name": "Update Profile",
+      "providerId": "UPDATE_PROFILE",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 40
+    },
+    {
+      "alias": "VERIFY_EMAIL",
+      "name": "Verify Email",
+      "providerId": "VERIFY_EMAIL",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 50
+    }
+  ]
+}
