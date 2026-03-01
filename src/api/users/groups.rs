@@ -835,7 +835,7 @@ mod tests {
                 .and(path("/admin/realms/master/users/123/groups/count"))
                 .and(header("Authorization", format!("Bearer {}", TEST_TOKEN)))
                 .respond_with(
-                    ResponseTemplate::new(200).set_body_json(&serde_json::json!({"count": 5})),
+                    ResponseTemplate::new(200).set_body_json(serde_json::json!({"count": 5})),
                 )
                 .mount(&mock_server)
                 .await;
@@ -859,7 +859,7 @@ mod tests {
             Mock::given(method("GET"))
                 .and(path("/admin/realms/master/users/123/groups/count"))
                 .respond_with(
-                    ResponseTemplate::new(200).set_body_json(&serde_json::json!({"count": 0})),
+                    ResponseTemplate::new(200).set_body_json(serde_json::json!({"count": 0})),
                 )
                 .mount(&mock_server)
                 .await;

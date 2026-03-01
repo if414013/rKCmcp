@@ -3,6 +3,7 @@
 pub mod credentials;
 pub mod groups;
 pub mod roles;
+pub mod sessions;
 pub mod types;
 
 pub use types::{CredentialRepresentation, FederatedIdentityRepresentation, UserRepresentation};
