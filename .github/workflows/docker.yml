@@ -1,0 +1,59 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "Dockerfile.indexer"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "src/**"
+      - "scripts/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "Dockerfile.indexer"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "src/**"
+      - "scripts/**"
+
+permissions:
+  contents: read
+
+jobs:
+  build-server:
+    name: Build Server Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build server image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: keycloak-mcp-server:test
+
+  build-indexer:
+    name: Build Indexer Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build indexer image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.indexer
+          push: false
+          tags: keycloak-mcp-indexer:test

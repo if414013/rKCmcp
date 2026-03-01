@@ -1,0 +1,22 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 1' # Weekly on Monday at midnight UTC
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Cargo Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-rust-lang/audit@v1
+        name: Audit Rust dependencies
